@@ -34,8 +34,8 @@ function TopNav({ className }: Props) {
           </ul>
         </nav>
         <div className='flex gap-3'>
-          <Button variant="outline" className='font-semibold py-4 px-5'>Войти</Button>
-          <Button variant="default" className='font-semibold py-4 px-5'>Создать профиль</Button>
+          <Link href="/auth/login"><Button variant="outline" className='font-semibold py-4 px-5'>Войти</Button></Link>
+          <Link href="/auth/register"><Button variant="default" className='font-semibold py-4 px-5'>Создать профиль</Button></Link>
         </div>
       </Container>
     </header>
