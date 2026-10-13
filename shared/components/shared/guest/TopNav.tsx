@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import React from 'react'
-import { Container } from './Container'
-import { Button } from '../ui/button'
+import { Container } from '../Container'
+import { Button } from '../../ui/button'
 
-interface Props{
+interface Props {
   className?: string
 }
 
@@ -34,8 +34,8 @@ function TopNav({ className }: Props) {
           </ul>
         </nav>
         <div className='flex gap-3'>
-          <Link href="/auth/login"><Button variant="outline" className='font-semibold py-4 px-5'>Войти</Button></Link>
-          <Link href="/auth/register"><Button variant="default" className='font-semibold py-4 px-5'>Создать профиль</Button></Link>
+          <Link href="/login"><Button variant="outline" className='font-semibold py-4 px-5'>Войти</Button></Link>
+          <Link href="/register"><Button variant="default" className='font-semibold py-4 px-5'>Создать профиль</Button></Link>
         </div>
       </Container>
     </header>

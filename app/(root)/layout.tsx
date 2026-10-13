@@ -1,12 +1,14 @@
-import TopNav from "@/shared/components/shared/TopNav";
+import { Container } from "@/shared/components/shared/Container";
+import Sidebar from "@/shared/components/shared/Sidebar";
 
 
-
-export default function HomeLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <main>
-      <TopNav className="fixed w-full"/>
-      {children}
+      <Container>
+        <Sidebar />
+        {children}
+      </Container>
     </main>
   );
 };
