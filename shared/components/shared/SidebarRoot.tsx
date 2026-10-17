@@ -33,9 +33,9 @@ const navigation = [
   },
 ];
 
-export default function Sidebar() {
+export default function SidebarRoot() {
   return (
-    <aside className="fixed z-40 flex h-screen w-60 flex-col border-r border-gray-200 bg-white px-5 py-6">
+    <aside className="sticky top-0 flex h-screen w-60 flex-col border-r border-gray-200 bg-white px-5 py-6">
       <Link
         href="/projects"
         className="mb-8 flex items-center gap-2.5 px-1"

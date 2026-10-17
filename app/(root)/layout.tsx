@@ -1,11 +1,11 @@
 import { Container } from "@/shared/components/shared/Container";
-import Sidebar from "@/shared/components/shared/Sidebar";
+import Sidebar from "@/shared/components/shared/SidebarRoot";
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <main>
-      <Container>
+      <Container className="flex">
         <Sidebar />
         {children}
       </Container>
