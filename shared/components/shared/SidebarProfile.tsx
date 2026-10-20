@@ -33,12 +33,12 @@ export default function SidebarProfile() {
     },
     {
       name: "Настройки",
-      href: "/settings",
+      href: "user/settings/profile-edit",
       icon: Settings,
     },
     {
       name: "Опыт работы",
-      href: "/experience",
+      href: "user/setting/experience",
       icon: Briefcase,
     },
   ];
