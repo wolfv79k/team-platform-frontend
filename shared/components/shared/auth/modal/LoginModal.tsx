@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import { ArrowRight, EyeOff } from 'lucide-react'
 
@@ -9,6 +11,7 @@ import {
   FieldLabel,
 } from '@/shared/components/ui/field'
 import Link from 'next/link'
+import {signIn} from "next-auth/react"
 
 function LoginModal() {
   return (
@@ -34,6 +37,7 @@ function LoginModal() {
         <form className="flex flex-col">
           {/* Google */}
           <Button
+            onClick={() => signIn("github")}
             type="button"
             variant="outline"
             className="
@@ -48,13 +52,13 @@ function LoginModal() {
             "
           >
             <Image
-              src="/Google_Favicon_2025.svg"
+              src="/GitHub.svg"
               width={18}
               height={18}
-              alt="Google"
+              alt="GitHub"
             />
 
-            Войти через Google
+            Войти через GitHub
           </Button>
 
           {/* Divider */}

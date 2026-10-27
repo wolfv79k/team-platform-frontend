@@ -1,0 +1,44 @@
+export enum AppRole {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
+
+export enum SkillLevel {
+  BEGINNER = 'BEGINNER',
+  MIDDLE = 'MIDDLE',
+  ADVANCED = 'ADVANCED',
+}
+
+export enum ProjectStatus {
+  RECRUITMENT = 'RECRUITMENT',
+  IN_PROGRESS = 'IN_PROGRESS',
+  ENDED = 'ENDED',
+}
+
+export enum ApplicationType {
+  REQUEST = 'REQUEST',
+  INVITATION = 'INVITATION',
+}
+
+export enum ApplicationStatus {
+  DECLINED = 'DECLINED',
+  ACCEPTED = 'ACCEPTED',
+  PENDING = 'PENDING',
+}
+
+export enum CommunityRole {
+  MEMBER = 'MEMBER',
+  MODERATOR = 'MODERATOR',
+}
+
+export enum NotificationType {
+  PROJECT_REQUEST = 'PROJECT_REQUEST',
+  PROJECT_INVITATION = 'PROJECT_INVITATION',
+  TEAM_REQUEST = 'TEAM_REQUEST',
+  TEAM_INVITATION = 'TEAM_INVITATION',
+  COMMENT = 'COMMENT',
+  PROJECT_DECLINED = 'PROJECT_DECLINED',
+  PROJECT_ACCEPTED = 'PROJECT_ACCEPTED',
+  TEAM_DECLINED = 'TEAM_DECLINED',
+  TEAM_ACCEPTED = 'TEAM_ACCEPTED',
+}

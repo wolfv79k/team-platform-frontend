@@ -41,19 +41,19 @@ function RegisterModal() {
               rounded-full
               border-border
               bg-background
-              text-sm
               font-normal
               shadow-sm
             "
           >
             <Image
-              src="/Google_Favicon_2025.svg"
+              className=''
+              src="/GitHub.svg"
               width={18}
               height={18}
-              alt="Google"
+              alt="GitHub"
             />
 
-            Войти через Google
+            Войти через GitHub
           </Button>
 
           {/* Divider */}

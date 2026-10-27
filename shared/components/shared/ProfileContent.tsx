@@ -25,7 +25,7 @@ function ProfileContent() {
 
   const profileNav = [
     { key: 1, label: "ПРОЕКТЫ" },
-    { key: 2, label: "РЕЗЮМУ" },
+    { key: 2, label: "РЕЗЮМЕ" },
     { key: 3, label: "ПОСТЫ" },
   ];
 
@@ -176,7 +176,7 @@ function ProfileContent() {
                     className="flex-1 bg-secondary py-6 text-base hover:bg-primary/80"
                   >
                     <Image
-                      src="/GitHubVector.svg"
+                      src="/GitHub.svg"
                       alt="GitHub"
                       width={16}
                       height={16}
