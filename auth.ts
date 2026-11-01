@@ -19,7 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, account, profile, user }) {
       if (account && account.provider !== "credentials") {
-        const apiUrl = process.env.API_URL;
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
         const internalSecret = process.env.AUTH_INTERNAL_SECRET;
 
         if (!apiUrl || !internalSecret) {
