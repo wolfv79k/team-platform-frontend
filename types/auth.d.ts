@@ -1,7 +1,15 @@
-import NextAuth from "next-auth";
+import type { User as AppUser } from "@/types/models";
+
 declare module "next-auth" {
   interface Session {
-    backendAccessToken?: string;
-    user: { id: string } & DefaultSession["user"];
+    accessToken?: string;
+    appUser?: AppUser;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    accessToken?: string;
+    appUser?: AppUser;
   }
 }

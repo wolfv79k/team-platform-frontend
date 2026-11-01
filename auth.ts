@@ -1,5 +1,12 @@
+import axios from "axios";
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
+import type { User as AppUser } from "@/types/models";
+
+interface OAuthLoginResponse {
+  token: string;
+  user?: AppUser;
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -8,39 +15,57 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.AUTH_GITHUB_SECRET,
     }),
   ],
+
   callbacks: {
-    async jwt({ token, account, profile }) {
-      if (account && profile) {
-        try {
-          const backendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: profile.email,
-              name: profile.name,
-              provider: account.provider,
-              providerId: account.providerAccountId,
-            }),
-          });
+    async jwt({ token, account, profile, user }) {
+      if (account && account.provider !== "credentials") {
+        const apiUrl = process.env.API_URL;
+        const internalSecret = process.env.AUTH_INTERNAL_SECRET;
 
-          if (!backendResponse.ok) throw new Error("Backend auth failed");
+        if (!apiUrl || !internalSecret) {
+          throw new Error("API_URL or AUTH_INTERNAL_SECRET is not defined");
+        }
 
-          const backendData = await backendResponse.json();
+        const providerLogin =
+          profile && "login" in profile && typeof profile.login === "string"
+            ? profile.login
+            : null;
 
-          token.backendAccessToken = backendData.accessToken; 
-          token.userId = backendData.user.id;
-        } catch (error) {
-          console.error("Error syncing with backend:", error);
+        const { data } = await axios.post<OAuthLoginResponse>(
+          `${apiUrl.replace(/\/$/, "")}/api/auth/oauth`,
+          {
+            provider: account.provider,
+            providerAccountId: account.providerAccountId,
+            providerLogin,
+            name: user?.name ?? null,
+            email: user?.email ?? null,
+            image: user?.image ?? null,
+          },
+          {
+            headers: {
+              "X-Internal-Secret": internalSecret,
+            },
+          },
+        );
+
+        token.accessToken = data.token;
+
+        if (data.user) {
+          token.appUser = data.user;
         }
       }
+
       return token;
     },
 
     async session({ session, token }) {
-      if (token) {
-        session.backendAccessToken = token.backendAccessToken as string;
-        session.user.id = token.userId as string;
+      session.accessToken =
+        typeof token.accessToken === "string" ? token.accessToken : undefined;
+
+      if (token.appUser && typeof token.appUser === "object") {
+        session.appUser = token.appUser as AppUser;
       }
+
       return session;
     },
   },
