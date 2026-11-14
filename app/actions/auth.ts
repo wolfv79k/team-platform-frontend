@@ -5,6 +5,11 @@ import { auth, signIn } from "@/auth"
 import { authApi, loadLocations, postAuth, type EmailCodeChallenge } from "@/services/auth.api"
 import { authCompletePath, safeCallback } from "@/shared/lib/auth-redirect"
 import { OWN_PROFILE_PATH, validateProfileUsername } from "@/shared/lib/profile-routes"
+import type { LocationEntity } from "@/types/models"
+
+type AuthResult<T extends object> =
+  | (T & { error?: never })
+  | ({ error: string } & { [Key in keyof T]?: never })
 
 const messages: Record<string, string> = {
   invalid_password: "Проверьте почту и пароль.",
@@ -23,7 +28,7 @@ async function startSession(
   provider: "credentials" | "email-code",
   credentials: Record<string, string>,
   callbackUrl?: string,
-) {
+): Promise<AuthResult<{ redirectTo: string }>> {
   const redirectTo = authCompletePath(callbackUrl)
   try {
     await signIn(provider, { ...credentials, redirect: false, redirectTo })
@@ -36,7 +41,11 @@ async function startSession(
   }
 }
 
-export async function submitAuth(mode: "login" | "register", data: FormData, callbackUrl?: string) {
+export async function submitAuth(
+  mode: "login" | "register",
+  data: FormData,
+  callbackUrl?: string,
+): Promise<AuthResult<{ redirectTo: string }>> {
   const email = emailFrom(data.get("email"))
   const password = data.get("password")
   if (!email) return { error: "Проверьте адрес электронной почты." }
@@ -82,7 +91,9 @@ export async function submitAuth(mode: "login" | "register", data: FormData, cal
   }
 }
 
-export async function requestLoginCode(value: string) {
+export async function requestLoginCode(
+  value: string,
+): Promise<AuthResult<{ challenge: EmailCodeChallenge }>> {
   if (process.env.AUTH_EMAIL_CODE_ENABLED !== "true")
     return { error: "Вход по коду пока недоступен." }
   const email = emailFrom(value)
@@ -108,13 +119,17 @@ export async function requestLoginCode(value: string) {
   }
 }
 
-export async function confirmEmailCode(challengeId: string, code: string, callbackUrl?: string) {
+export async function confirmEmailCode(
+  challengeId: string,
+  code: string,
+  callbackUrl?: string,
+): Promise<AuthResult<{ redirectTo: string }>> {
   if (process.env.AUTH_EMAIL_CODE_ENABLED !== "true")
     return { error: "Вход по коду пока недоступен." }
   return startSession("email-code", { challengeId, code }, callbackUrl)
 }
 
-export async function getAuthLocations() {
+export async function getAuthLocations(): Promise<AuthResult<{ locations: LocationEntity[] }>> {
   try {
     return { locations: await loadLocations() }
   } catch {
@@ -122,7 +137,10 @@ export async function getAuthLocations() {
   }
 }
 
-export async function saveAuthLocation(locationId: number, callbackUrl?: string) {
+export async function saveAuthLocation(
+  locationId: number,
+  callbackUrl?: string,
+): Promise<AuthResult<{ redirectTo: string }>> {
   const session = await auth()
   if (!session?.accessToken) return { redirectTo: "/login?reason=session-expired" }
   if (!Number.isSafeInteger(locationId) || locationId < 1 || locationId > 2147483647) {
