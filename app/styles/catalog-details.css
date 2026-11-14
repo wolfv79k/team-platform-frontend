@@ -1,0 +1,867 @@
+:where(.site-surface) .project-detail {
+  padding: 28px 32px 50px;
+}
+
+:where(.site-surface) .detail-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 27px;
+}
+
+:where(.site-surface) .detail-title h1 {
+  font-size: 27px;
+}
+
+:where(.site-surface) .detail-title p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--secondary);
+  margin-top: 7px;
+}
+
+:where(.site-surface) .detail-title > .tag {
+  margin-top: 7px;
+}
+
+:where(.site-surface) .detail-tabs {
+  display: flex;
+  gap: 28px;
+  margin: 25px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--secondary);
+}
+
+:where(.site-surface) .detail-tabs > * {
+  padding: 12px 0;
+}
+
+:where(.site-surface) .detail-tabs > .active {
+  border-bottom: 2px solid var(--text);
+  font-weight: 500;
+  color: var(--text);
+}
+
+:where(.site-surface) .project-detail h2 {
+  font-size: 18px;
+  margin: 24px 0 12px;
+}
+
+:where(.site-surface) .reading {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--secondary);
+}
+
+:where(.site-surface) .contribution {
+  padding: 20px;
+  margin-top: 26px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+:where(.site-surface) .contribution h3 {
+  font-size: 14px;
+}
+
+:where(.site-surface) .contribution p {
+  font-size: 13px;
+  color: var(--secondary);
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
+:where(.site-surface) .member {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+}
+
+:where(.site-surface) .member > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+:where(.site-surface) .member strong {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+:where(.site-surface) .member small {
+  font-size: 11px;
+}
+
+:where(.site-surface) .member > .icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+:where(.site-surface) .open-role {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+:where(.site-surface) .open-role > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+:where(.site-surface) .open-role strong {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+:where(.site-surface) .open-role small {
+  font-size: 11px;
+}
+
+:where(.site-surface) .open-role > .icon {
+  color: var(--muted);
+}
+
+@media (max-width: 1200px) and (min-width: 1024px) {
+  :where(.site-surface) .project-detail {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .project-detail {
+    padding: 22px 20px 40px;
+  }
+
+  :where(.site-surface) .detail-title {
+    display: block;
+    margin-top: 22px;
+  }
+
+  :where(.site-surface) .detail-title h1 {
+    font-size: 25px;
+  }
+
+  :where(.site-surface) .detail-title > .tag {
+    margin-top: 12px;
+  }
+
+  :where(.site-surface) .detail-title p {
+    font-size: 13px;
+  }
+
+  :where(.site-surface) .project-detail h2 {
+    font-size: 17px;
+  }
+
+  :where(.site-surface) .project-detail .reading {
+    font-size: 13px;
+  }
+
+  :where(.site-surface) .contribution {
+    padding: 16px;
+  }
+
+  :where(.site-surface) .contribution h3 {
+    font-size: 13px;
+  }
+
+  :where(.site-surface) .contribution .btn {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+
+  :where(.site-surface) .contribution p {
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .open-role {
+    gap: 9px;
+    flex-wrap: wrap;
+  }
+
+  :where(.site-surface) .open-role > .tag {
+    margin-left: 30px;
+  }
+
+  :where(.site-surface) .member small {
+    font-size: 10px;
+  }
+
+  :where(.site-surface) .member .avatar {
+    width: 39px;
+    height: 39px;
+  }
+}
+
+:where(.site-surface) .idea-byline,
+:where(.site-surface) .idea-byline > a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+:where(.site-surface) .idea-byline {
+  margin-top: 16px;
+  flex-wrap: wrap;
+  gap: 5px 16px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+:where(.site-surface) .idea-byline .avatar {
+  width: 25px;
+  height: 25px;
+}
+
+:where(.site-surface) .idea-byline > a {
+  color: var(--secondary);
+}
+
+:where(.site-surface) .idea-byline > a:hover {
+  color: var(--link);
+}
+
+:where(.site-surface) .idea-detail > .idea-byline {
+  margin-top: 20px;
+}
+
+:where(.site-surface) .idea-relation h2 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+:where(.site-surface) .idea-relation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 28px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+:where(.site-surface) .idea-relation p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--secondary);
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .idea-relation .btn {
+  font-size: 12px;
+}
+
+:where(.site-surface) .idea-origin {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--secondary);
+}
+
+:where(.site-surface) .idea-origin .icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+:where(.site-surface) .idea-origin > a {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .idea-byline {
+    font-size: 10px;
+    margin-top: 12px;
+    gap: 6px 12px;
+  }
+
+  :where(.site-surface) .idea-byline .avatar {
+    width: 22px;
+    height: 22px;
+  }
+
+  :where(.site-surface) .idea-relation {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  :where(.site-surface) .idea-relation h2 {
+    font-size: 16px;
+  }
+
+  :where(.site-surface) .idea-relation p {
+    font-size: 13px;
+  }
+
+  :where(.site-surface) .idea-detail .entity-actions {
+    width: auto;
+  }
+}
+
+:where(.site-surface) .idea-detail .entity-heading > div:first-child {
+  flex: 1;
+}
+
+:where(.site-surface) .project-detail-photo img {
+  aspect-ratio: 2.55;
+}
+
+:where(.site-surface) .work-detail-photo img {
+  aspect-ratio: 2.2;
+}
+
+:where(.site-surface) .event-photo {
+  margin-top: 24px;
+}
+
+:where(.site-surface) .event-photo img {
+  aspect-ratio: 3;
+}
+
+:where(.site-surface) .event-photo figcaption {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .project-detail-photo img,
+  :where(.site-surface) .event-photo img {
+    aspect-ratio: 2;
+  }
+}
+
+:where(.site-surface) .preserve-lines {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .event-row {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr) 30px;
+  gap: 20px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+
+:where(.site-surface) .entity-mark {
+  display: grid;
+  place-items: center;
+  width: 66px;
+  height: 66px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -1px;
+  background: var(--blue-soft);
+  color: var(--link);
+  flex: none;
+}
+
+:where(.site-surface) .entity-mark.community {
+  background: var(--surface);
+  color: var(--text);
+  font-size: 20px;
+  box-shadow: inset 0 -4px 0 var(--peach);
+}
+
+:where(.site-surface) .entity-row-content {
+  min-width: 0;
+}
+
+:where(.site-surface) .entity-row-content > p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--secondary);
+  max-width: 650px;
+  margin-top: 7px;
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .entity-row-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+:where(.site-surface) .entity-row-title .project-name {
+  font-size: 17px;
+}
+
+:where(.site-surface) .entity-row-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 17px;
+}
+
+:where(.site-surface) .entity-row-footer > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+:where(.site-surface) .entity-row-footer .icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+:where(.site-surface) .people-stack {
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+}
+
+:where(.site-surface) .people-stack .avatar {
+  width: 25px;
+  height: 25px;
+  border: 2px solid var(--canvas);
+}
+
+:where(.site-surface) .people-stack .avatar + .avatar {
+  margin-left: -8px;
+}
+
+:where(.site-surface) .entity-detail {
+  padding: 34px 32px 54px;
+}
+
+:where(.site-surface) .entity-heading {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+:where(.site-surface) .entity-heading > div:not(.entity-actions) {
+  min-width: 0;
+}
+
+:where(.site-surface) .entity-heading h1 {
+  font-size: 26px;
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .entity-heading p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 7px;
+}
+
+:where(.site-surface) .entity-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  flex: none;
+}
+
+:where(.site-surface) .entity-actions .btn {
+  font-size: 12px;
+}
+
+:where(.site-surface) .entity-intro {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--secondary);
+  max-width: 650px;
+  margin-top: 23px;
+}
+
+:where(.site-surface) .entity-detail .detail-tabs {
+  margin-top: 30px;
+  margin-bottom: 28px;
+  gap: 27px;
+  overflow-x: auto;
+}
+
+:where(.site-surface) .detail-tabs > button {
+  font-size: 12px;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  line-height: 1.5;
+}
+
+:where(.site-surface) .detail-tabs > .active {
+  border-bottom-color: var(--text);
+}
+
+:where(.site-surface) .entity-section + .entity-section {
+  margin-top: 30px;
+}
+
+:where(.site-surface) .entity-section > h2,
+:where(.site-surface) .entity-section .section-heading h2 {
+  font-size: 18px;
+  margin: 0 0 14px;
+}
+
+:where(.site-surface) .entity-section .section-heading h2 {
+  margin: 0;
+}
+
+:where(.site-surface) .entity-section .section-heading {
+  margin-bottom: 8px;
+}
+
+:where(.site-surface) .member-entry + .member-entry {
+  border-top: 1px solid var(--line);
+}
+
+:where(.site-surface) .member-entry .member {
+  padding: 17px 0;
+}
+
+:where(.site-surface) .member-entry .member:hover strong {
+  color: var(--link);
+}
+
+:where(.site-surface) .member-entry .member .avatar {
+  flex: none;
+}
+
+:where(.site-surface) .member-entry .member strong {
+  line-height: 1.5;
+}
+
+:where(.site-surface) .entity-detail > .inline-note {
+  margin-top: 22px;
+}
+
+:where(.site-surface) .post-card {
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+:where(.site-surface) .post-card h3 {
+  font-size: 17px;
+  font-weight: 550;
+  line-height: 1.5;
+  margin-top: 14px;
+}
+
+:where(.site-surface) .comment {
+  padding: 10px 0 20px;
+}
+
+:where(.site-surface) .comment + .comment {
+  border-top: 1px solid var(--line);
+}
+
+:where(.site-surface) .comment > .reading {
+  font-size: 13px;
+  margin-left: 56px;
+}
+
+:where(.site-surface) .date-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 66px;
+  height: 76px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  overflow: hidden;
+  flex: none;
+}
+
+:where(.site-surface) .date-tile > span {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--secondary);
+  line-height: 1.6;
+}
+
+:where(.site-surface) .date-tile > strong {
+  font-size: 29px;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+:where(.site-surface) .date-tile.large {
+  width: 88px;
+  height: 98px;
+  background: var(--peach);
+  border: 0;
+}
+
+:where(.site-surface) .date-tile.large > strong {
+  font-size: 38px;
+}
+
+:where(.site-surface) .date-tile.large > span {
+  color: var(--text);
+  font-size: 11px;
+}
+
+:where(.site-surface) .event-metadata {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 11px;
+  color: var(--secondary);
+  font-size: 11px;
+}
+
+:where(.site-surface) .event-metadata > span {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+:where(.site-surface) .event-metadata .icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+:where(.site-surface) .event-row .entity-row-footer {
+  margin-top: 13px;
+}
+
+:where(.site-surface) .event-row .entity-row-footer > a {
+  color: var(--link);
+  font-size: 11px;
+}
+
+:where(.site-surface) .event-row a,
+:where(.site-surface) .post-card a {
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .idea-project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--link);
+  font-size: 11px;
+}
+
+:where(.site-surface) .idea-project-link:hover {
+  text-decoration: underline;
+}
+
+:where(.site-surface) .idea-project-link svg {
+  width: 13px;
+  height: 13px;
+}
+
+@media (max-width: 1023px) {
+  :where(.site-surface) .entity-detail {
+    padding: 28px 24px 44px;
+  }
+}
+
+@media (max-width: 767px) {
+  :where(.site-surface) .entity-actions {
+    margin-left: 0;
+  }
+
+  :where(.site-surface) .entity-heading {
+    flex-wrap: wrap;
+    gap: 13px;
+  }
+
+  :where(.site-surface) .entity-heading > .entity-actions {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  :where(.site-surface) .entity-heading > .entity-actions .btn {
+    min-height: 38px;
+  }
+
+  :where(.site-surface) .entity-heading h1 {
+    font-size: 24px;
+  }
+
+  :where(.site-surface) .entity-heading > .entity-mark {
+    width: 58px;
+    height: 58px;
+  }
+
+  :where(.site-surface) .entity-heading > div:not(.entity-actions) {
+    flex: 1;
+  }
+
+  :where(.site-surface) .event-row {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .entity-detail {
+    padding: 25px 20px 42px;
+  }
+
+  :where(.site-surface) .event-row {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 13px;
+    padding: 23px 0;
+  }
+
+  :where(.site-surface) .entity-mark {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    font-size: 18px;
+  }
+
+  :where(.site-surface) .entity-mark.community {
+    font-size: 16px;
+  }
+
+  :where(.site-surface) .entity-row-title {
+    gap: 7px;
+  }
+
+  :where(.site-surface) .entity-row-title .project-name {
+    font-size: 15px;
+  }
+
+  :where(.site-surface) .entity-row-title .tag {
+    font-size: 9px;
+  }
+
+  :where(.site-surface) .entity-row-content > p {
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .entity-row-footer {
+    font-size: 10px;
+    gap: 8px;
+    margin-top: 13px;
+  }
+
+  :where(.site-surface) .people-stack .avatar {
+    width: 22px;
+    height: 22px;
+  }
+
+  :where(.site-surface) .entity-heading h1 {
+    font-size: 23px;
+  }
+
+  :where(.site-surface) .entity-heading p {
+    font-size: 11px;
+  }
+
+  :where(.site-surface) .entity-intro {
+    font-size: 12px;
+    line-height: 1.8;
+    margin-top: 20px;
+  }
+
+  :where(.site-surface) .entity-detail .detail-tabs {
+    gap: 22px;
+    margin: 23px 0;
+  }
+
+  :where(.site-surface) .detail-tabs > button {
+    font-size: 11px;
+  }
+
+  :where(.site-surface) .entity-section > h2,
+  :where(.site-surface) .entity-section .section-heading h2 {
+    font-size: 16px;
+  }
+
+  :where(.site-surface) .entity-section .reading {
+    font-size: 13px;
+  }
+
+  :where(.site-surface) .entity-section + .entity-section {
+    margin-top: 25px;
+  }
+
+  :where(.site-surface) .entity-section .empty-tab {
+    padding: 34px 8px;
+  }
+
+  :where(.site-surface) .member-entry .member {
+    gap: 10px;
+  }
+
+  :where(.site-surface) .member-entry .member .avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  :where(.site-surface) .member-entry .member strong {
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .post-card {
+    padding: 22px 0;
+  }
+
+  :where(.site-surface) .post-card h3 {
+    font-size: 16px;
+  }
+
+  :where(.site-surface) .comment > .reading {
+    margin-left: 48px;
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .date-tile {
+    width: 48px;
+    height: 61px;
+    border-radius: 8px;
+  }
+
+  :where(.site-surface) .date-tile > strong {
+    font-size: 25px;
+  }
+
+  :where(.site-surface) .date-tile > span {
+    font-size: 9px;
+  }
+
+  :where(.site-surface) .event-metadata {
+    font-size: 10px;
+    gap: 7px 13px;
+  }
+
+  :where(.site-surface) .event-metadata .icon svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  :where(.site-surface) .event-detail .entity-row-footer .tag {
+    font-size: 9px;
+  }
+
+  :where(.site-surface) .entity-detail .contribution {
+    padding: 16px;
+  }
+
+  :where(.site-surface) .event-row .entity-row-footer {
+    gap: 9px;
+  }
+}

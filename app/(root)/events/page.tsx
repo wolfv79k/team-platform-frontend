@@ -1,9 +1,5 @@
-import React from 'react'
+import Catalog from "@/shared/components/shared/catalog/catalog"
 
-function EventsPage() {
-  return (
-    <div>EventsPage</div>
-  )
+export default function Page() {
+  return <Catalog kind="events" />
 }
-
-export default EventsPage

@@ -12,14 +12,14 @@ import type {
 
 export interface User {
   id: number
-  email: string
+  email: string | null
   username: string
   name: string | null
   bio: string | null
   avatarUrl: string | null
   role: AppRole
   createdAt: string
-  locationId: number
+  locationId: number | null
 
   location?: LocationEntity
   userSkills?: UserSkill[]
@@ -318,4 +318,13 @@ export interface Notification {
   createdAt: string
 
   recipient?: User
+}
+
+export interface PortfolioWork {
+  id: number
+  title: string
+  description?: string
+  contribution?: string
+  coverUrl?: string
+  url?: string
 }

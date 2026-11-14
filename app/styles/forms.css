@@ -1,0 +1,363 @@
+:where(.site-surface) .edit-form {
+  position: relative;
+}
+
+:where(.site-surface) .form-section {
+  padding: 22px 32px 27px;
+}
+
+:where(.site-surface) .form-section + .form-section {
+  border-top: 1px solid var(--line);
+}
+
+:where(.site-surface) .form-section-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin: 3px 0 25px;
+  justify-content: center;
+}
+
+:where(.site-surface) .form-section-title:before,
+:where(.site-surface) .form-section-title:after {
+  content: "";
+  height: 1px;
+  background: var(--line);
+  flex: 1;
+}
+
+:where(.site-surface) .form-section-title .icon {
+  color: var(--secondary);
+}
+
+:where(.site-surface) .form-section-title .icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+:where(.site-surface) .form-section-title span {
+  white-space: nowrap;
+}
+
+:where(.site-surface) .field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 19px;
+  min-width: 0;
+}
+
+:where(.site-surface) .field > label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  min-height: 18px;
+}
+
+:where(.site-surface) .required {
+  color: var(--error);
+  font-size: 12px;
+  margin-left: 2px;
+}
+
+:where(.site-surface) .field small {
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+:where(.site-surface) .field-error:empty {
+  display: none;
+}
+
+:where(.site-surface) .field-error {
+  color: var(--error);
+  font-size: 12px;
+}
+
+:where(.site-surface) .field:has(.field-error:not(:empty)) input {
+  border-color: var(--error);
+}
+
+:where(.site-surface) .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 22px;
+}
+
+:where(.site-surface) .form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 32px;
+  border-top: 1px solid var(--line);
+  background: var(--canvas);
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+:where(.site-surface) .form-footer .btn {
+  font-size: 12px;
+}
+
+:where(.site-surface) .project-basics {
+  padding-top: 30px;
+}
+
+:where(.site-surface) .status-control {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:where(.site-surface) .status-control > .small-label {
+  font-size: 10px;
+  margin: 0;
+}
+
+:where(.site-surface) .media-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 26px;
+}
+
+:where(.site-surface) .media-row h3 {
+  font-size: 13px;
+}
+
+:where(.site-surface) .media-row p {
+  font-size: 11px;
+  color: var(--secondary);
+  margin-top: 7px;
+}
+
+:where(.site-surface) .media-unavailable {
+  width: 140px;
+  height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 8px;
+  background: var(--hover);
+  color: var(--muted);
+}
+
+:where(.site-surface) .media-unavailable span {
+  font-size: 10px;
+}
+
+:where(.site-surface) dialog .field {
+  margin: 20px 0;
+}
+
+@media (max-width: 1200px) and (min-width: 1024px) {
+  :where(.site-surface) .form-section {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 1023px) {
+  :where(.site-surface) .form-footer {
+    bottom: 70px;
+    padding: 14px 24px;
+  }
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .form-section {
+    padding: 24px 20px;
+  }
+
+  :where(.site-surface) .form-section-title {
+    font-size: 9px;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+
+  :where(.site-surface) .form-grid {
+    gap: 0 14px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  :where(.site-surface) .field {
+    margin-bottom: 18px;
+    gap: 7px;
+  }
+
+  :where(.site-surface) .field > label {
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .field small {
+    font-size: 11px;
+  }
+
+  :where(.site-surface) .field .searchbox {
+    height: 42px;
+  }
+
+  :where(.site-surface) .field .searchbox input {
+    font-size: 14px;
+  }
+
+  :where(.site-surface) .form-footer {
+    padding: 12px 20px;
+    gap: 8px;
+  }
+
+  :where(.site-surface) .form-footer .btn {
+    min-height: 40px;
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .form-footer .primary {
+    flex: 1;
+  }
+
+  :where(.site-surface) .form-section .form-grid:has([id^="social"]) {
+    grid-template-columns: 1fr;
+  }
+
+  :where(.site-surface) .project-basics .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  :where(.site-surface) .media-row {
+    gap: 15px;
+  }
+
+  :where(.site-surface) .media-unavailable {
+    flex: none;
+    width: 100px;
+    height: 78px;
+  }
+
+  :where(.site-surface) .status-control {
+    gap: 9px;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 38px;
+  }
+}
+
+@media print {
+  :where(.site-surface) .form-footer {
+    display: none;
+  }
+}
+
+:where(.site-surface) .form-intro {
+  margin-bottom: 30px;
+}
+
+:where(.site-surface) .form-intro h1 {
+  font-size: 24px;
+}
+
+:where(.site-surface) .form-intro > p {
+  font-size: 13px;
+  color: var(--secondary);
+  max-width: 580px;
+  line-height: 1.7;
+  margin-top: 9px;
+}
+
+:where(.site-surface) .inline-note {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--secondary);
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  margin-top: 20px;
+}
+
+:where(.site-surface) .skill-checkboxes {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  margin-top: 4px;
+  padding: 4px 14px;
+}
+
+:where(.site-surface) .skill-option-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+:where(.site-surface) .skill-option-row + .skill-option-row {
+  border-top: 1px solid var(--line);
+}
+
+:where(.site-surface) .skill-option-row > label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+:where(.site-surface) .skill-option-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+}
+
+:where(.site-surface) .skill-option-row select {
+  width: 145px;
+  font-size: 12px;
+  height: 32px;
+  padding: 4px 9px;
+}
+
+:where(.site-surface) .skill-option-row:has(input:not(:checked)) select {
+  opacity: 0.55;
+}
+
+:where(.site-surface) dialog .field > label {
+  font-size: 12px;
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .skill-option-row select {
+    width: 130px;
+    font-size: 11px;
+  }
+
+  :where(.site-surface) .skill-option-row label {
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .form-intro h1 {
+    font-size: 22px;
+  }
+
+  :where(.site-surface) .form-intro p {
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .inline-note {
+    font-size: 11px;
+    padding: 12px 14px;
+  }
+}

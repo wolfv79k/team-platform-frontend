@@ -1,14 +1,12 @@
-import { Container } from "@/shared/components/shared/Container";
-import Sidebar from "@/shared/components/shared/SidebarRoot";
+import { getViewer } from "@/services/viewer"
+import AccountLayout from "@/shared/components/shared/layout/account-layout"
+import { ViewerProvider } from "@/shared/components/shared/layout/viewer-provider"
 
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const viewer = await getViewer()
   return (
-    <main>
-      <Container className="flex">
-        <Sidebar />
-        {children}
-      </Container>
-    </main>
-  );
-};
+    <ViewerProvider viewer={viewer}>
+      <AccountLayout>{children}</AccountLayout>
+    </ViewerProvider>
+  )
+}

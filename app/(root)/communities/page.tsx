@@ -1,9 +1,5 @@
-import React from 'react'
+import Catalog from "@/shared/components/shared/catalog/catalog"
 
-function CommunitiesPage() {
-  return (
-    <div>CommunitiesPage</div>
-  )
+export default function Page() {
+  return <Catalog kind="communities" />
 }
-
-export default CommunitiesPage

@@ -2,13 +2,36 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-body{
+body {
   font-weight: 400;
 }
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-page: var(--canvas);
+  --color-panel: var(--surface);
+  --color-ink: var(--text);
+  --color-copy: var(--secondary);
+  --color-subtle: var(--muted);
+  --color-stroke: var(--line);
+  --color-stroke-strong: var(--line-strong);
+  --color-control: var(--input);
+  --color-action: var(--primary);
+  --color-link-accent: var(--link);
+  --color-interaction: var(--hover);
+  --color-selected: var(--blue-soft);
+  --color-unavailable: var(--disabled);
+  --color-account-page: var(--profile-canvas);
+  --color-account-panel: var(--profile-surface);
+  --color-account-ink: var(--profile-text);
+  --color-account-copy: var(--profile-secondary);
+  --color-account-subtle: var(--profile-muted);
+  --color-account-stroke: var(--profile-line);
+  --color-account-link: var(--profile-link);
+  --color-account-interaction: var(--profile-hover);
+  --color-account-selected: var(--profile-blue);
+  --color-account-unavailable: var(--profile-disabled);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
@@ -131,4 +154,842 @@ body{
   html {
     @apply font-sans;
   }
+}
+@theme {
+  --text-fine-print: 8px;
+  --text-micro: 10px;
+  --text-caption: 11px;
+  --text-compact: 13px;
+  --text-body: 14px;
+  --text-body-large: 15px;
+  --text-section: 17px;
+  --text-heading-small: 19px;
+  --text-heading: 26px;
+  --text-heading-large: 27px;
+  --color-typescript: #3178c6;
+  --color-account-stroke-light: #aaa5a0;
+}
+
+@font-face {
+  font-family: "TeamPlatform Inter";
+  src: url("/fonts/inter-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F;
+}
+
+@font-face {
+  font-family: "TeamPlatform Inter";
+  src: url("/fonts/inter-cyrillic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+:where(.site-surface, .account-surface, .settings-skill-popup) {
+  --canvas: #f6f5f4;
+  --surface: #fff;
+  --text: #111;
+  --secondary: #615d59;
+  --muted: #69645f;
+  --line: rgba(0, 0, 0, 0.09);
+  --line-strong: #aaa5a0;
+  --primary: #0075de;
+  --primary-hover: #005eb8;
+  --link: #0067c6;
+  --blue-soft: #e6f3fe;
+  --peach: #f6d5b8;
+  --amber: #ffb110;
+  --green: #386344;
+  --green-soft: #e8f1e8;
+  --coral: #f64932;
+  --error: #b52e23;
+  --input: #fff;
+  --hover: rgba(0, 0, 0, 0.035);
+  --disabled: #eae7e4;
+  --shadow: 0 8px 28px rgb(35 30 25 / 0.06);
+  --layer-nav: 10;
+  --layer-drawer: 20;
+  color-scheme: light;
+}
+
+:where(html.dark) :is(.site-surface, .account-surface, .settings-skill-popup) {
+  --canvas: #191918;
+  --surface: #222221;
+  --text: #eeeae5;
+  --secondary: #c2bcb6;
+  --muted: #b1aaa3;
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: #716b65;
+  --primary: #0075de;
+  --primary-hover: #0067c6;
+  --link: #7dc2ff;
+  --blue-soft: #18334b;
+  --peach: #654631;
+  --green: #b6d3ba;
+  --green-soft: #213b29;
+  --input: #242423;
+  --hover: rgba(255, 255, 255, 0.05);
+  --disabled: #34312e;
+  --shadow: 0 8px 28px rgb(0 0 0 / 0.14);
+  --error: #ff9a8e;
+  color-scheme: dark;
+}
+
+:where(.site-surface) * {
+  box-sizing: border-box;
+}
+
+:where(.site-surface) {
+  scroll-padding-top: 90px;
+}
+
+:where(.site-surface) {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--text);
+  font:
+    14px/1.5 "TeamPlatform Inter",
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
+:where(.site-surface) a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:where(.site-surface) button,
+:where(.site-surface) input,
+:where(.site-surface) textarea,
+:where(.site-surface) select {
+  font: inherit;
+}
+
+:where(.site-surface) button,
+:where(.site-surface) a,
+:where(.site-surface) input,
+:where(.site-surface) select,
+:where(.site-surface) textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(.site-surface) button {
+  color: inherit;
+  cursor: pointer;
+}
+
+:where(.site-surface) button {
+  background: none;
+  border: 0;
+}
+
+:where(.site-surface) button:disabled {
+  cursor: not-allowed;
+}
+
+:where(.site-surface) button,
+:where(.site-surface) a {
+  touch-action: manipulation;
+}
+
+:where(.site-surface) input,
+:where(.site-surface) textarea,
+:where(.site-surface) select {
+  max-width: 100%;
+}
+
+:where(.site-surface) h1,
+:where(.site-surface) h2,
+:where(.site-surface) h3,
+:where(.site-surface) p {
+  margin: 0;
+}
+
+:where(.site-surface) h1,
+:where(.site-surface) h2,
+:where(.site-surface) h3 {
+  line-height: 1.3;
+}
+
+:where(.site-surface) h1 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+}
+
+:where(.site-surface) h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+:where(.site-surface) h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+:where(.site-surface) small {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+:where(.site-surface) img {
+  display: block;
+  max-width: 100%;
+}
+
+:where(.site-surface) a:hover {
+  color: var(--link);
+}
+
+:where(.site-surface) :focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+
+:where(.site-surface) .skill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 11px;
+  line-height: 16px;
+  white-space: nowrap;
+  color: var(--secondary);
+}
+
+:where(.site-surface) .project-name {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+:where(.site-surface) input,
+:where(.site-surface) textarea,
+:where(.site-surface) select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--input);
+  color: var(--text);
+  height: 38px;
+  padding: 8px 11px;
+  font-size: 13px;
+  line-height: 20px;
+  outline: 0;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+:where(.site-surface) textarea {
+  height: auto;
+  display: block;
+  min-height: 90px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+:where(.site-surface) input::placeholder,
+:where(.site-surface) textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+:where(.site-surface) input:focus,
+:where(.site-surface) textarea:focus,
+:where(.site-surface) select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--blue-soft);
+}
+
+:where(.site-surface) input:focus-visible,
+:where(.site-surface) textarea:focus-visible,
+:where(.site-surface) select:focus-visible {
+  outline: none;
+}
+
+:where(.site-surface) input:disabled,
+:where(.site-surface) select:disabled {
+  background: var(--hover);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+:where(.site-surface) input:disabled::placeholder {
+  color: var(--muted);
+}
+
+:where(.site-surface) input[type="password"] {
+  padding-right: 42px;
+}
+
+:where(.site-surface) .small-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 14px 0 10px;
+}
+
+:where(.site-surface) dialog {
+  position: fixed;
+  width: 460px;
+  max-width: calc(100vw - 32px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 32px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+:where(.site-surface) dialog::backdrop {
+  background: rgba(20, 18, 16, 0.32);
+}
+
+:where(.site-surface) dialog h2 {
+  font-size: 21px;
+  margin-right: 15px;
+}
+
+:where(.site-surface) dialog > p {
+  font-size: 14px;
+  color: var(--secondary);
+  line-height: 1.7;
+  margin: 15px 0 24px;
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) h1 {
+    font-size: 25px;
+  }
+
+  :where(.site-surface) input,
+  :where(.site-surface) textarea,
+  :where(.site-surface) select {
+    font-size: 16px;
+    height: 42px;
+    padding: 9px 11px;
+  }
+
+  :where(.site-surface) textarea {
+    height: auto;
+    font-size: 14px;
+  }
+
+  :where(.site-surface) dialog {
+    padding: 28px 22px;
+  }
+}
+
+:where(html.dark .site-surface) img[src$="GitHub.svg"] {
+  filter: invert(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.site-surface) *,
+  :where(.site-surface) *:before,
+  :where(.site-surface) *:after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media print {
+  :where(.site-surface) {
+    print-color-adjust: exact;
+  }
+}
+
+:where(.site-surface) .initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #543c2d;
+  background: #f3d8c1;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+}
+
+:where(.site-surface) .initials.tiny {
+  font-size: 10px;
+}
+
+:where(.site-surface) .initials.large {
+  font-size: 28px;
+}
+
+:where(.site-surface) .skill-level-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 24px;
+}
+
+:where(.site-surface) .skill-level-list > span {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+:where(.site-surface) .skill-level-list small {
+  font-size: 10px;
+  padding-left: 2px;
+}
+
+:where(.site-surface) dialog select {
+  font-size: 12px;
+}
+
+@media (min-width: 640px) {
+  :where(.site-surface):has(#collection-results) {
+    scrollbar-gutter: stable;
+  }
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .skill-level-list {
+    gap: 16px 19px;
+  }
+}
+
+:where(.site-surface) .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:where(.site-surface) .icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  vertical-align: middle;
+}
+
+:where(.site-surface) .icon svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+:where(.site-surface) .icon-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+  border-radius: 8px;
+  color: var(--muted);
+  flex: none;
+}
+
+:where(.site-surface) .icon-btn:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+:where(.site-surface) .btn {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  line-height: 20px;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s,
+    transform 0.12s;
+}
+
+:where(.site-surface) .btn .icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+:where(.site-surface) .btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+:where(.site-surface) .btn.primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+:where(.site-surface) .btn.primary:hover {
+  background: var(--primary-hover);
+  color: #fff;
+}
+
+:where(.site-surface) .btn.secondary {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--text);
+}
+
+:where(.site-surface) .btn.secondary:hover {
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+:where(.site-surface) .btn.quiet {
+  background: transparent;
+  color: var(--secondary);
+}
+
+:where(.site-surface) .btn.quiet:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+:where(.site-surface) .btn.small {
+  min-height: 32px;
+  padding: 5px 11px;
+  font-size: 13px;
+}
+
+:where(.site-surface) .btn:disabled {
+  background: var(--disabled);
+  color: var(--muted);
+  border-color: transparent;
+  opacity: 0.85;
+}
+
+:where(.site-surface) .text-link {
+  font-weight: 500;
+  color: var(--link);
+}
+
+:where(.site-surface) .text-link:hover {
+  text-decoration: underline;
+}
+
+:where(.site-surface) .flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+:where(.site-surface) .tag {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  border-radius: 4px;
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  background: var(--hover);
+  color: var(--secondary);
+  white-space: nowrap;
+}
+
+:where(.site-surface) .tag.blue {
+  background: var(--blue-soft);
+  color: var(--link);
+}
+
+:where(.site-surface) .tag.green {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+:where(.site-surface) .searchbox {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 11px;
+  height: 38px;
+  color: var(--muted);
+}
+
+:where(.site-surface) .searchbox .icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+:where(.site-surface) .searchbox input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: none;
+  min-width: 0;
+  color: var(--text);
+  height: 100%;
+  padding: 0;
+  font-size: 13px;
+}
+
+:where(.site-surface) .searchbox:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+:where(.site-surface) .searchbox input:focus-visible {
+  outline: none;
+}
+
+:where(.site-surface) .avatar {
+  border-radius: 50%;
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  background: var(--canvas);
+}
+
+:where(.site-surface) .avatar.tiny {
+  width: 30px;
+  height: 30px;
+}
+
+:where(.site-surface) .avatar.small {
+  width: 44px;
+  height: 44px;
+}
+
+:where(.site-surface) .avatar.medium {
+  width: 52px;
+  height: 52px;
+}
+
+:where(.site-surface) .avatar-edit {
+  position: relative;
+  width: 100px;
+  margin: auto;
+}
+
+:where(.site-surface) .avatar-edit > .avatar {
+  width: 100px;
+  height: 100px;
+}
+
+:where(.site-surface) .skill > .icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+:where(.site-surface) .section-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+:where(.site-surface) .section-heading h2 {
+  font-size: 17px;
+  letter-spacing: -0.3px;
+}
+
+:where(.site-surface) .section-heading p {
+  color: var(--secondary);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+:where(.site-surface) .count {
+  font-size: 11px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  min-width: 23px;
+  text-align: center;
+  padding: 0 5px;
+  color: var(--muted);
+}
+
+:where(.site-surface) .empty-tab {
+  padding: 68px 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+}
+
+:where(.site-surface) .empty-tab > .icon {
+  color: var(--muted);
+}
+
+:where(.site-surface) .empty-tab > .icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+:where(.site-surface) .empty-tab h2 {
+  font-size: 18px;
+}
+
+:where(.site-surface) .empty-tab p {
+  font-size: 13px;
+  color: var(--secondary);
+  max-width: 350px;
+}
+
+:where(.site-surface) .empty-tab > .btn {
+  margin-top: 5px;
+}
+
+:where(.site-surface) .select-wrap {
+  position: relative;
+}
+
+:where(.site-surface) .select-wrap select {
+  appearance: none;
+  padding-right: 35px;
+}
+
+:where(.site-surface) .select-wrap > .icon {
+  position: absolute;
+  right: 11px;
+  top: 10px;
+  pointer-events: none;
+  color: var(--secondary);
+}
+
+:where(.site-surface) .select-wrap > .icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+:where(.site-surface) .mini-skills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .avatar-edit,
+  :where(.site-surface) .avatar-edit > .avatar {
+    width: 92px;
+    height: 92px;
+  }
+
+  :where(.site-surface) .section-heading h2 {
+    font-size: 15px;
+  }
+
+  :where(.site-surface) .section-heading p {
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .select-wrap > .icon {
+    top: 13px;
+  }
+
+  :where(.site-surface) .empty-tab {
+    padding: 55px 24px;
+  }
+
+  :where(.site-surface) .empty-tab h2 {
+    font-size: 17px;
+  }
+}
+
+:where(.site-surface) .avatar.initials {
+  background: var(--blue-soft);
+  color: var(--link);
+  font-size: 16px;
+}
+
+:where(.site-surface) .avatar.initials.tiny {
+  font-size: 10px;
+}
+
+:where(.site-surface) .avatar.initials.large {
+  font-size: 27px;
+}
+
+:where(.site-surface) .avatar.initials.small,
+:where(.site-surface) .avatar.initials.medium {
+  flex: none;
+}
+
+:where(.site-surface) .section-heading > .count {
+  margin-left: auto;
+  flex: none;
+}
+
+:where(.site-surface) .section-heading h2 {
+  font-size: 17px;
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .section-heading p {
+    line-height: 1.7;
+  }
+}
+
+:where(.site-surface) .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  font-weight: 650;
+  font-size: 19px;
+  letter-spacing: -0.6px;
+  white-space: nowrap;
+}
+
+:where(.site-surface) .brand-mark {
+  display: inline-block;
+  background: var(--text);
+  width: 27px;
+  height: 27px;
+  border-radius: 7px;
+  position: relative;
+  flex: none;
+}
+
+:where(.site-surface) .brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1.5px solid var(--canvas);
+  border-radius: 2px;
+}
+
+:where(.site-surface) .logo:hover {
+  color: var(--text);
+}
+
+:where(.site-surface) .wide-photo {
+  margin: 0;
+  min-width: 0;
+}
+
+:where(.site-surface) .wide-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1120 / 530;
+  border-radius: 12px;
+  background: var(--hover);
+  object-fit: cover;
 }

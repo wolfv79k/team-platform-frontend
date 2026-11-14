@@ -1,0 +1,791 @@
+:where(.site-surface) .catalog-head {
+  padding: 30px 32px 0;
+}
+
+:where(.site-surface) .catalog-head h1 {
+  font-size: 24px;
+  letter-spacing: -0.6px;
+}
+
+:where(.site-surface) .catalog-head > p {
+  font-size: 13px;
+  color: var(--secondary);
+  margin-top: 8px;
+}
+
+:where(.site-surface) .catalog-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+:where(.site-surface) .catalog-actions .searchbox {
+  flex: 1;
+  min-width: 100px;
+}
+
+:where(.site-surface) .catalog-actions .btn {
+  font-size: 12px;
+}
+
+:where(.site-surface) .catalog-actions .btn > .icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+:where(.site-surface) .catalog-filters {
+  display: flex;
+  gap: 18px;
+  margin-top: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+:where(.site-surface) .filter {
+  padding: 9px 0 14px;
+  font-size: 12px;
+  color: var(--secondary);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+:where(.site-surface) .filter.active {
+  border-bottom-color: var(--text);
+  color: var(--text);
+  font-weight: 500;
+}
+
+:where(.site-surface) .catalog-list {
+  padding: 0 32px;
+}
+
+@media (max-width: 1200px) and (min-width: 1024px) {
+  :where(.site-surface) .catalog-head {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  :where(.site-surface) .catalog-list {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .catalog-head {
+    padding: 24px 20px 0;
+  }
+
+  :where(.site-surface) .catalog-head h1 {
+    font-size: 24px;
+  }
+
+  :where(.site-surface) .catalog-head > p {
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .catalog-actions {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  :where(.site-surface) .catalog-actions .searchbox {
+    flex-basis: 100%;
+    height: 42px;
+  }
+
+  :where(.site-surface) .catalog-actions .searchbox input {
+    font-size: 14px;
+  }
+
+  :where(.site-surface) .catalog-actions .btn {
+    margin-left: auto;
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .catalog-filters {
+    gap: 18px;
+    margin-top: 15px;
+    overflow-x: auto;
+  }
+
+  :where(.site-surface) .catalog-filters .filter {
+    font-size: 11px;
+  }
+
+  :where(.site-surface) .catalog-list {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .catalog-filters .filter {
+    padding-inline: 0;
+  }
+}
+
+:where(.site-surface) .project-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 18px;
+  padding-block: 24px 40px;
+}
+
+:where(.site-surface) .project-catalog-card {
+  min-width: 0;
+}
+
+:where(.site-surface) .project-tile {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 0.15s ease;
+}
+
+:where(.site-surface) .project-tile:hover {
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+:where(.site-surface) .project-tile:focus-visible {
+  outline-offset: 3px;
+}
+
+:where(.site-surface) .project-tile-photo {
+  aspect-ratio: 2.1;
+  overflow: hidden;
+  border-radius: 11px 11px 0 0;
+  background: var(--hover);
+}
+
+:where(.site-surface) .project-tile-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+:where(.site-surface) .project-tile-body {
+  padding: 17px 18px 19px;
+}
+
+:where(.site-surface) .project-tile-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+:where(.site-surface) .project-tile-arrow {
+  color: var(--secondary);
+}
+
+:where(.site-surface) .project-tile-arrow svg {
+  width: 17px;
+  height: 17px;
+}
+
+:where(.site-surface) .project-tile:hover .project-tile-arrow {
+  color: var(--link);
+}
+
+:where(.site-surface) .project-tile h2 {
+  font-size: 19px;
+  line-height: 1.28;
+  letter-spacing: -0.35px;
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .project-tile-description {
+  margin-top: 7px;
+  color: var(--secondary);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+:where(.site-surface) .project-tile .mini-skills {
+  margin-top: 13px;
+}
+
+:where(.site-surface) .project-tile-role {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-top: 12px;
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--secondary);
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .project-tile-role svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 767px) {
+  :where(.site-surface) .project-cards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding-top: 18px;
+  }
+
+  :where(.site-surface) .project-tile-body {
+    padding: 15px 16px 17px;
+  }
+
+  :where(.site-surface) .project-tile h2 {
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.site-surface) .project-tile {
+    transition: none;
+  }
+}
+
+:where(.site-surface) .catalog-entry-title {
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.32;
+  letter-spacing: -0.3px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .catalog-entry-title a,
+:where(.site-surface) .catalog-excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .catalog-entry-title a:hover {
+  color: var(--link);
+}
+
+:where(.site-surface) .catalog-title-line {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 5px 9px;
+  min-width: 0;
+}
+
+:where(.site-surface) .catalog-excerpt {
+  margin-top: 6px;
+  color: var(--secondary);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+:where(.site-surface) .catalog-cover {
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  aspect-ratio: 1.6;
+  border-radius: 8px;
+  background: var(--hover);
+}
+
+:where(.site-surface) .catalog-cover img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+:where(.site-surface) .catalog-cover.is-fallback {
+  color: var(--secondary);
+  background: var(--hover);
+  font-size: 19px;
+  font-weight: 550;
+}
+
+:where(.site-surface) .catalog-cover.is-fallback svg {
+  width: 22px;
+  height: 22px;
+}
+
+:where(.site-surface) .catalog-detail-photo {
+  margin-top: 24px;
+}
+
+:where(.site-surface) .catalog-detail-photo img {
+  aspect-ratio: 2.65;
+}
+
+:where(.site-surface) .catalog-tech {
+  flex: 0 1 154px;
+  min-width: 0;
+}
+
+:where(.site-surface) .catalog-tech .field {
+  margin: 0;
+}
+
+:where(.site-surface) .catalog-tech .field > label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+:where(.site-surface) .catalog-tech select {
+  width: 100%;
+  height: 38px;
+  padding: 0 27px 0 10px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+}
+
+:where(.site-surface) .catalog-tech .select-wrap > .icon {
+  top: 11px;
+  right: 9px;
+}
+
+:where(.site-surface) .idea-index {
+  margin-block: 20px 36px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+:where(.site-surface) .idea-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(96px, 19%, 152px);
+  align-items: center;
+  gap: 18px;
+  padding: 18px 20px;
+}
+
+:where(.site-surface) .idea-entry + .idea-entry {
+  border-top: 1px solid var(--line);
+}
+
+:where(.site-surface) .idea-entry-body {
+  min-width: 0;
+}
+
+:where(.site-surface) .idea-entry-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px 16px;
+  margin-top: 10px;
+}
+
+:where(.site-surface) .idea-entry .idea-byline {
+  margin: 0;
+  min-width: 0;
+}
+
+:where(.site-surface) .idea-entry .idea-byline > a {
+  min-width: 0;
+}
+
+:where(.site-surface) .idea-entry .idea-byline > a > span:not(.avatar) {
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .team-index {
+  padding-block: 4px 36px;
+}
+
+:where(.site-surface) .team-entry {
+  display: grid;
+  grid-template-columns: clamp(96px, 17%, 132px) minmax(0, 1fr) minmax(145px, 22%);
+  gap: 16px 20px;
+  align-items: center;
+  padding: 19px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+:where(.site-surface) .team-entry-body {
+  min-width: 0;
+}
+
+:where(.site-surface) .team-entry > .catalog-cover {
+  aspect-ratio: 1.45;
+}
+
+:where(.site-surface) .team-entry .mini-skills {
+  gap: 5px;
+  margin-top: 9px;
+}
+
+:where(.site-surface) .team-entry .mini-skills > .tag {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:where(.site-surface) .team-roster {
+  display: grid;
+  gap: 8px;
+  align-content: center;
+  min-width: 0;
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--secondary);
+  line-height: 1.45;
+}
+
+:where(.site-surface) .team-roster-count {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 8px;
+}
+
+:where(.site-surface) .team-roster p {
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .team-roster p a {
+  display: block;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+:where(.site-surface) .team-roster p a:hover {
+  color: var(--link);
+}
+
+:where(.site-surface) .community-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 14px;
+  padding-block: 20px 36px;
+}
+
+:where(.site-surface) .community-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 16px 16px 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+:where(.site-surface) .community-card-summary {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  align-items: start;
+  gap: 13px;
+}
+
+:where(.site-surface) .community-card-summary > .catalog-cover {
+  aspect-ratio: 1.22;
+}
+
+:where(.site-surface) .community-card .catalog-cover.is-fallback {
+  color: var(--link);
+  background: var(--blue-soft);
+}
+
+:where(.site-surface) .community-card-body {
+  min-width: 0;
+}
+
+:where(.site-surface) .community-card .catalog-entry-title {
+  font-size: 17px;
+}
+
+:where(.site-surface) .community-card-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: auto;
+  padding-block: 12px 10px;
+  color: var(--secondary);
+  font-size: 11px;
+}
+
+:where(.site-surface) .community-card-meta > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+:where(.site-surface) .community-card-meta svg,
+:where(.site-surface) .community-discussion svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+:where(.site-surface) .community-discussion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding-block: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--secondary);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+:where(.site-surface) a.community-discussion:hover {
+  color: var(--link);
+}
+
+:where(.site-surface) .community-discussion > span:not(.icon) {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:where(.site-surface) .event-index {
+  padding-block: 4px 36px;
+}
+
+:where(.site-surface) .event-entry.event-row {
+  grid-template-columns: 60px minmax(0, 1fr) clamp(118px, 22%, 174px);
+  gap: 16px 18px;
+  align-items: start;
+  padding-block: 20px;
+}
+
+:where(.site-surface) .event-entry .date-tile {
+  flex-direction: column-reverse;
+  width: 100%;
+  height: 66px;
+  padding: 0;
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+:where(.site-surface) .event-entry .date-tile > strong {
+  font-size: 30px;
+  line-height: 1.08;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(.site-surface) .event-entry .date-tile > span {
+  font-size: 10px;
+  letter-spacing: 0.35px;
+  margin-top: 2px;
+}
+
+:where(.site-surface) .event-entry > .catalog-cover {
+  align-self: center;
+}
+
+:where(.site-surface) .event-entry .catalog-entry-title .project-name {
+  font-size: inherit;
+}
+
+:where(.site-surface) .event-entry .event-metadata {
+  margin-top: 7px;
+  gap: 6px 13px;
+}
+
+:where(.site-surface) .event-entry .event-metadata > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .event-entry .event-metadata .icon {
+  flex: none;
+}
+
+:where(.site-surface) .event-entry .entity-row-content > .catalog-excerpt {
+  margin-top: 7px;
+}
+
+:where(.site-surface) .event-entry .entity-row-footer {
+  margin-top: 9px;
+}
+
+@media (max-width: 699px) {
+  :where(.site-surface) .team-entry {
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 8px 13px;
+    align-items: start;
+  }
+
+  :where(.site-surface) .team-roster {
+    grid-column: 2;
+    border-left: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 10px;
+  }
+
+  :where(.site-surface) .team-roster p a {
+    display: inline;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .catalog-entry-title,
+  :where(.site-surface) .community-card .catalog-entry-title {
+    font-size: 16px;
+  }
+
+  :where(.site-surface) .catalog-excerpt {
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .catalog-head:has(#collection-search) .catalog-filters {
+    gap: 12px;
+    overflow: visible;
+  }
+
+  :where(.site-surface) .catalog-head:has(#collection-search) .catalog-filters .filter {
+    min-width: 0;
+    min-height: 42px;
+    padding-block: 9px;
+    line-height: 1.3;
+    white-space: normal;
+    text-align: left;
+  }
+
+  :where(.site-surface) .catalog-detail-photo {
+    margin-top: 18px;
+  }
+
+  :where(.site-surface) .catalog-detail-photo img {
+    aspect-ratio: 2.05;
+  }
+
+  :where(.site-surface) .catalog-tech {
+    flex: 1 1 84px;
+  }
+
+  :where(.site-surface) .idea-index {
+    margin-top: 16px;
+  }
+
+  :where(.site-surface) .idea-entry {
+    grid-template-columns: minmax(0, 1fr) 68px;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  :where(.site-surface) .idea-entry > .catalog-cover,
+  :where(.site-surface) .team-entry > .catalog-cover {
+    aspect-ratio: 1.2;
+  }
+
+  :where(.site-surface) .idea-entry-meta {
+    gap: 6px 9px;
+    margin-top: 8px;
+  }
+
+  :where(.site-surface) .team-entry {
+    grid-template-columns: 66px minmax(0, 1fr);
+    padding-block: 15px;
+  }
+
+  :where(.site-surface) .community-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding-top: 16px;
+  }
+
+  :where(.site-surface) .community-card {
+    padding: 13px 13px 0;
+  }
+
+  :where(.site-surface) .community-card-summary {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 11px;
+  }
+
+  :where(.site-surface) .event-entry.event-row {
+    grid-template-columns: 44px minmax(0, 1fr) 64px;
+    gap: 6px 11px;
+    padding-block: 16px;
+  }
+
+  :where(.site-surface) .event-entry .entity-row-content {
+    display: contents;
+  }
+
+  :where(.site-surface) .event-entry .entity-row-title {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  :where(.site-surface) .event-entry > .catalog-cover {
+    grid-column: 3;
+    grid-row: 1;
+    align-self: start;
+    aspect-ratio: 1.25;
+  }
+
+  :where(.site-surface) .event-entry .event-metadata,
+  :where(.site-surface) .event-entry .entity-row-content > .catalog-excerpt,
+  :where(.site-surface) .event-entry .entity-row-footer {
+    grid-column: 2/-1;
+    margin-top: 0;
+  }
+
+  :where(.site-surface) .event-entry .date-tile {
+    height: 52px;
+  }
+
+  :where(.site-surface) .event-entry .date-tile > strong {
+    font-size: 24px;
+  }
+
+  :where(.site-surface) .event-entry .date-tile > span {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 359px) {
+  :where(.site-surface) .catalog-actions:has(.catalog-tech) > .btn {
+    gap: 5px;
+    padding-inline: 9px;
+    font-size: 11px;
+  }
+
+  :where(.site-surface) .catalog-tech select {
+    font-size: 11px;
+  }
+
+  :where(.site-surface) .event-entry.event-row {
+    grid-template-columns: 40px minmax(0, 1fr) 52px;
+    column-gap: 9px;
+  }
+
+  :where(.site-surface) .event-entry .catalog-entry-title a {
+    -webkit-line-clamp: 3;
+  }
+}

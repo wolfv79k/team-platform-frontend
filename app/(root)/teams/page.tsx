@@ -1,9 +1,5 @@
-import React from 'react'
+import Catalog from "@/shared/components/shared/catalog/catalog"
 
-function TeamsPage() {
-  return (
-    <div>TeamsPage</div>
-  )
+export default function Page() {
+  return <Catalog kind="teams" />
 }
-
-export default TeamsPage

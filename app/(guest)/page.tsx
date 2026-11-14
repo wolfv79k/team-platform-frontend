@@ -1,11 +1,33 @@
-import { Button } from "@/shared/components/ui/button";
+import { auth } from "@/auth"
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
+import { Icon } from "@/shared/components/ui/icon"
+import { PhotoCover } from "@/shared/components/shared/catalog/catalog-media"
+import { catalogPreview } from "@/shared/data/catalog-preview"
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth()
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen py-2">
-      <h1 className="text-4xl font-bold text-center">Здесь начало твоей IT <br />карьеры</h1>
-      <p className="mt-4 text-muted-foreground text-center">Платформа для тех, кто хочет развиваться в IT<br/>через реальные проекты, команды, идеи<br/> и практику.</p>
-      <Button variant="default" className="mt-6 text-xl px-8 py-6">Начать</Button>
-    </div>
-  );
+    <main className="landing">
+      <section className="home-hero">
+        <h1>
+          Здесь начало твоей
+          <br />
+          <span className="hero-highlight">IT карьеры</span>
+        </h1>
+        <p>
+          Платформа для развития в IT через реальные проекты,
+          <br className="desktop-break" /> команды, идеи и практику.
+        </p>
+        <Link href={session?.accessToken ? "/user" : "/register"} className="btn primary">
+          <Icon icon={ArrowRight} />
+          Начать
+        </Link>
+        <figure className="wide-photo home-photo">
+          <PhotoCover photo={catalogPreview.photos.home} decorative={false} />
+        </figure>
+      </section>
+    </main>
+  )
 }

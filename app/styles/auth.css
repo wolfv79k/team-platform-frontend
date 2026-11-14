@@ -1,0 +1,155 @@
+:where(.site-surface) .auth-page {
+  min-height: calc(100dvh - 72px);
+  padding: 64px 24px 50px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+:where(.site-surface) .auth-page > h1 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.7px;
+  margin-bottom: 27px;
+}
+
+:where(.site-surface) .auth-card {
+  position: relative;
+  width: 400px;
+  max-width: 100%;
+  padding: 25px 27px 22px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+:where(.site-surface) .auth-card .field {
+  margin-bottom: 20px;
+}
+
+:where(.site-surface) .auth-card input,
+:where(.site-surface) .auth-card select {
+  height: 38px;
+}
+
+:where(.site-surface) .auth-card .oauth {
+  width: 100%;
+  border-radius: 999px;
+  font-weight: 400;
+  font-size: 13px;
+  padding-left: 32px;
+  background: var(--surface);
+}
+
+:where(.site-surface) .oauth-logo {
+  position: absolute;
+  left: 65px;
+  top: 35px;
+  pointer-events: none;
+}
+
+:where(.site-surface) .divider-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--muted);
+  margin: 27px 0 23px;
+}
+
+:where(.site-surface) .divider-label:before,
+:where(.site-surface) .divider-label:after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--line);
+}
+
+:where(.site-surface) .auth-submit {
+  width: 100%;
+  margin-top: 2px;
+}
+
+:where(.site-surface) .auth-bottom {
+  font-size: 12px;
+  color: var(--secondary);
+  margin-top: 20px;
+}
+
+:where(.site-surface) .auth-bottom a {
+  color: var(--link);
+}
+
+:where(.site-surface) .demo-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--secondary);
+  margin-top: 24px;
+}
+
+:where(.site-surface) .demo-link .icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+@media (max-width: 1023px) {
+  :where(.site-surface) .auth-page {
+    padding-top: 56px;
+  }
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .auth-page {
+    padding: 44px 20px 60px;
+    min-height: calc(100dvh - 64px);
+  }
+
+  :where(.site-surface) .auth-page > h1 {
+    font-size: 24px;
+    line-height: 1.4;
+    letter-spacing: -0.6px;
+    margin-bottom: 24px;
+  }
+
+  :where(.site-surface) .auth-card {
+    padding: 22px 22px 23px;
+  }
+
+  :where(.site-surface) .auth-card input,
+  :where(.site-surface) .auth-card select {
+    height: 42px;
+    font-size: 16px;
+  }
+
+  :where(.site-surface) .auth-card .oauth {
+    font-size: 12px;
+    height: 40px;
+  }
+
+  :where(.site-surface) .oauth-logo {
+    left: 48px;
+    top: 34px;
+  }
+
+  :where(.site-surface) .auth-card .field {
+    margin-bottom: 19px;
+  }
+
+  :where(.site-surface) .auth-submit {
+    height: 42px;
+  }
+
+  :where(.site-surface) .divider-label {
+    font-size: 10px;
+    margin: 24px 0 22px;
+  }
+
+  :where(.site-surface) .auth-bottom {
+    font-size: 11px;
+  }
+}

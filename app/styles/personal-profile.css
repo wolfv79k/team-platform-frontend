@@ -1,0 +1,49 @@
+.account-surface {
+  --profile-canvas: var(--canvas);
+  --profile-surface: var(--surface);
+  --profile-text: var(--text);
+  --profile-secondary: var(--secondary);
+  --profile-muted: var(--muted);
+  --profile-line: var(--line);
+  --profile-hover: var(--hover);
+  --profile-blue: var(--blue-soft);
+  --profile-link: var(--link);
+  --profile-disabled: var(--disabled);
+  font-family: "TeamPlatform Inter", Arial, sans-serif;
+  font-feature-settings: "cv11", "ss01";
+}
+
+@media (max-width: 639px) {
+  .personal-profile {
+    border-inline-width: 0;
+  }
+
+  .personal-profile-header {
+    height: 60px;
+    padding-inline: 20px;
+  }
+
+  .personal-profile-hero {
+    padding-top: 27px;
+  }
+
+  .personal-profile-hero h1 {
+    font-size: 23px;
+  }
+
+  .personal-profile-tabs {
+    margin: 22px 20px 0;
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  .personal-profile-tabs button {
+    font-size: 10px;
+    letter-spacing: 0.15px;
+  }
+}
+
+.account-surface .profile-rail-toggle {
+  min-width: 32px;
+  min-height: 32px;
+}

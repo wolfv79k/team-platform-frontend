@@ -1,0 +1,294 @@
+:where(.site-surface) .guest-header {
+  max-width: 1320px;
+  height: 72px;
+  border-bottom: 1px solid var(--line);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 0 24px;
+}
+
+:where(.site-surface) .guest-header > .logo {
+  font-size: 17px;
+}
+
+:where(.site-surface) .guest-header nav {
+  display: flex;
+  gap: 25px;
+  font-size: 12px;
+  color: var(--secondary);
+}
+
+:where(.site-surface) .guest-header > div {
+  display: flex;
+  gap: 9px;
+}
+
+:where(.site-surface) .guest-header .brand-mark {
+  width: 26px;
+  height: 26px;
+}
+
+:where(.site-surface) .home-hero {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  min-height: 660px;
+  padding: 78px 24px 35px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+:where(.site-surface) .home-hero h1 {
+  font-size: 62px;
+  line-height: 1.12;
+  letter-spacing: -2.5px;
+  font-weight: 600;
+}
+
+:where(.site-surface) .hero-highlight {
+  display: inline-block;
+  border-radius: 999px;
+  background: var(--peach);
+  padding: 2px 26px 6px;
+  margin-top: 8px;
+}
+
+:where(.site-surface) .home-hero > p {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--secondary);
+  margin: 24px 0;
+}
+
+:where(.site-surface) .home-hero > .btn {
+  min-width: 142px;
+}
+
+:where(.site-surface) .home-preview {
+  max-width: 1100px;
+  margin: 24px auto 80px;
+  padding: 36px 48px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+:where(.site-surface) .home-preview-title h2 {
+  font-size: 28px;
+  letter-spacing: -0.9px;
+  font-weight: 500;
+}
+
+:where(.site-surface) .home-preview-title > p {
+  color: var(--secondary);
+  margin-top: 10px;
+}
+
+:where(.site-surface) .live-profile-preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 25px 0 0;
+  margin-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+:where(.site-surface) .live-profile-preview > span:not(.preview-open) {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+:where(.site-surface) .live-profile-preview strong {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+:where(.site-surface) .live-profile-preview small {
+  font-size: 12px;
+}
+
+:where(.site-surface) .preview-open {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--link);
+}
+
+:where(.site-surface) .preview-open .icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 1200px) and (min-width: 1024px) {
+  :where(.site-surface) .guest-header nav {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 1023px) {
+  :where(.site-surface) .guest-header nav {
+    display: none;
+  }
+
+  :where(.site-surface) .guest-header {
+    max-width: 760px;
+  }
+
+  :where(.site-surface) .guest-header > .logo {
+    font-size: 16px;
+  }
+
+  :where(.site-surface) .guest-header .btn {
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .home-hero {
+    min-height: 650px;
+    padding-top: 75px;
+  }
+
+  :where(.site-surface) .home-preview {
+    margin: 0 24px 70px;
+    padding: 30px;
+  }
+
+  :where(.site-surface) .home-hero h1 {
+    font-size: 54px;
+    letter-spacing: -1.9px;
+  }
+
+  :where(.site-surface) .guest-header .logo {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .guest-header {
+    height: 64px;
+    padding: 0 18px;
+    gap: 10px;
+  }
+
+  :where(.site-surface) .guest-header .logo {
+    font-size: 14px;
+    gap: 7px;
+  }
+
+  :where(.site-surface) .guest-header .brand-mark {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+  }
+
+  :where(.site-surface) .guest-header .brand-mark:after {
+    inset: 6px;
+    border-width: 1px;
+  }
+
+  :where(.site-surface) .guest-header > div {
+    gap: 5px;
+  }
+
+  :where(.site-surface) .guest-header .btn {
+    font-size: 11px;
+    padding: 5px 8px;
+    min-height: 32px;
+  }
+
+  :where(.site-surface) .home-hero {
+    min-height: 600px;
+    padding: 65px 20px 35px;
+  }
+
+  :where(.site-surface) .home-hero h1 {
+    font-size: 38px;
+    line-height: 1.15;
+    letter-spacing: -1.5px;
+  }
+
+  :where(.site-surface) .hero-highlight {
+    margin-top: 6px;
+    padding: 3px 16px 6px;
+  }
+
+  :where(.site-surface) .home-hero > p {
+    font-size: 14px;
+    max-width: 320px;
+    margin: 23px 0;
+  }
+
+  :where(.site-surface) .desktop-break {
+    display: none;
+  }
+
+  :where(.site-surface) .home-preview {
+    padding: 24px;
+    margin: 0 20px 75px;
+  }
+
+  :where(.site-surface) .home-preview-title h2 {
+    font-size: 23px;
+  }
+
+  :where(.site-surface) .home-preview-title > p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  :where(.site-surface) .live-profile-preview {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 20px;
+    margin-top: 20px;
+  }
+
+  :where(.site-surface) .live-profile-preview strong {
+    font-size: 13px;
+  }
+
+  :where(.site-surface) .live-profile-preview small {
+    font-size: 10px;
+  }
+
+  :where(.site-surface) .preview-open {
+    margin-left: 64px;
+    font-size: 12px;
+  }
+
+  :where(.site-surface) .live-profile-preview .avatar {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+:where(.site-surface) .home-hero:has(.home-photo) {
+  min-height: 0;
+  padding-bottom: 24px;
+}
+
+:where(.site-surface) .home-photo {
+  margin-top: 36px;
+  width: 100%;
+  max-width: 960px;
+}
+
+:where(.site-surface) .home-photo img {
+  aspect-ratio: 1440/575;
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .home-hero .home-photo {
+    margin-top: 28px;
+  }
+
+  :where(.site-surface) .home-photo img {
+    aspect-ratio: 1.75;
+  }
+}

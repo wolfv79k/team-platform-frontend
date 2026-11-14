@@ -1,0 +1,283 @@
+:where(.site-surface) .profile-hero {
+  padding: 36px 40px 0;
+  text-align: center;
+}
+
+:where(.site-surface) .profile-hero h1 {
+  font-size: 26px;
+  letter-spacing: -0.7px;
+  margin-top: 16px;
+  font-weight: 600;
+}
+
+:where(.site-surface) .profile-bio {
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 500px;
+  margin: 10px auto 0;
+  color: var(--secondary);
+}
+
+:where(.site-surface) .profile-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 17px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+:where(.site-surface) .profile-meta > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+:where(.site-surface) .profile-meta .icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+:where(.site-surface) .profile-skills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 20px;
+}
+
+:where(.site-surface) .profile-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin: 28px 32px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+:where(.site-surface) .profile-tabs button {
+  position: relative;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 16px 2px;
+}
+
+:where(.site-surface) .profile-tabs button.active {
+  color: var(--text);
+}
+
+:where(.site-surface) .profile-tabs button.active:after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  background: var(--text);
+  height: 2px;
+}
+
+:where(.site-surface) .work-section {
+  padding: 27px 32px 36px;
+}
+
+:where(.site-surface) .work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 23px;
+}
+
+@media (max-width: 1200px) and (min-width: 1024px) {
+  :where(.site-surface) .profile-hero {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  :where(.site-surface) .work-section {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  :where(.site-surface) .work-grid {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 1023px) {
+  :where(.site-surface) .profile-hero {
+    padding-top: 32px;
+  }
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .profile-hero {
+    padding: 27px 20px 0;
+  }
+
+  :where(.site-surface) .profile-hero h1 {
+    font-size: 23px;
+    margin-top: 15px;
+  }
+
+  :where(.site-surface) .profile-bio {
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 340px;
+    margin-top: 10px;
+  }
+
+  :where(.site-surface) .profile-meta {
+    gap: 8px 14px;
+    font-size: 11px;
+    margin-top: 15px;
+  }
+
+  :where(.site-surface) .profile-meta .icon svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  :where(.site-surface) .profile-skills {
+    margin-top: 17px;
+    gap: 6px;
+  }
+
+  :where(.site-surface) .profile-tabs {
+    margin: 22px 20px 0;
+    gap: 31px;
+  }
+
+  :where(.site-surface) .profile-tabs button {
+    font-size: 11px;
+    padding: 15px 0;
+  }
+
+  :where(.site-surface) .work-section {
+    padding: 23px 20px 36px;
+  }
+
+  :where(.site-surface) .work-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 20px;
+  }
+}
+
+:where(.site-surface) .public-username {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+:where(.site-surface) .public-profile-actions {
+  margin-top: 20px;
+}
+
+:where(.site-surface) .public-profile-actions .btn {
+  font-size: 12px;
+}
+
+:where(.site-surface) .profile-tabs {
+  gap: 28px;
+}
+
+:where(.site-surface) .profile-tabs button {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+:where(.site-surface) .service-project-list {
+  margin-top: 25px;
+}
+
+:where(.site-surface) .profile-project-row {
+  display: grid;
+  grid-template-columns: 94px minmax(0, 1fr);
+  column-gap: 17px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+:where(.site-surface) .profile-project-row > div > p {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+:where(.site-surface) .profile-project-row > .tag {
+  justify-self: start;
+  margin-top: 10px;
+  grid-column: 2;
+}
+
+:where(.site-surface) .profile-project-row a {
+  overflow-wrap: anywhere;
+}
+
+:where(.site-surface) .profile-posts {
+  display: grid;
+  gap: 12px;
+}
+
+:where(.site-surface) .profile-posts .post-card {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
+}
+
+:where(.site-surface) .profile-posts .post-card:last-child {
+  border-bottom: 0;
+}
+
+@media (max-width: 639px) {
+  :where(.site-surface) .profile-tabs {
+    gap: 0;
+    justify-content: space-between;
+    margin-inline: 20px;
+  }
+
+  :where(.site-surface) .profile-tabs button {
+    font-size: 10px;
+    letter-spacing: 0.15px;
+  }
+
+  :where(.site-surface) .public-username {
+    font-size: 11px;
+  }
+
+  :where(.site-surface) .public-profile-actions {
+    margin-top: 17px;
+  }
+
+  :where(.site-surface) .public-profile-actions .btn {
+    font-size: 11px;
+  }
+
+  :where(.site-surface) .profile-project-row {
+    grid-template-columns: 74px minmax(0, 1fr);
+    gap: 10px 13px;
+  }
+
+  :where(.site-surface) .profile-project-row .project-name {
+    font-size: 14px;
+  }
+
+  :where(.site-surface) .profile-project-row > div > p {
+    font-size: 10px;
+  }
+
+  :where(.site-surface) .profile-project-row > .tag {
+    margin-top: 0;
+    font-size: 9px;
+  }
+
+  :where(.site-surface) .profile-hero h1 {
+    font-size: 23px;
+  }
+}
