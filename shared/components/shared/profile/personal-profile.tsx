@@ -158,7 +158,11 @@ export default function PersonalProfile({ profile }: { profile: ProfileView }) {
               </Link>
             </li>
           </ul>
-          <ProfileLinks website={profile.website} socialLinks={profile.socialLinks} />
+          <ProfileLinks
+            website={profile.website}
+            resume={profile.resume}
+            socialLinks={profile.socialLinks}
+          />
         </section>
 
         <nav

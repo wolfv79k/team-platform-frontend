@@ -3,10 +3,12 @@ import type { ProfileView } from "@/services/users.api"
 
 export default function ProfileLinks({
   website,
+  resume,
   socialLinks,
-}: Pick<ProfileView, "website" | "socialLinks">) {
+}: Pick<ProfileView, "website" | "resume" | "socialLinks">) {
   const links = [
-    { label: "Сайт / резюме", value: website },
+    { label: "Сайт", value: website },
+    { label: "Резюме", value: resume },
     ...socialFields.map(({ key, label }) => ({ label, value: socialLinks?.[key] })),
   ].flatMap(({ label, value }) => {
     if (!value) return []

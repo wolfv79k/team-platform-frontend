@@ -4,13 +4,25 @@ import { authApi, authApiUrl } from "@/services/auth.api"
 import { loadLegacyProfile } from "@/services/legacy-profile.api"
 import type { ProfileActivity, ProfileActivityItem } from "@/shared/lib/profile-activity"
 import { OWN_PROFILE_PATH, PROFILE_SETTINGS_PATH } from "@/shared/lib/profile-routes"
-import type { ProfileSettings } from "@/shared/lib/profile-settings"
-import type { LocationEntity, PortfolioWork, ProjectMember, Skill, User, UserSkill } from "@/types/models"
+import { profileSocialLinks, type ProfileSettings } from "@/shared/lib/profile-settings"
+import type {
+  LocationEntity,
+  PortfolioWork,
+  ProjectMember,
+  Skill,
+  User,
+  UserSkill,
+} from "@/types/models"
 
-type ProfileResponse = Pick<User, "id" | "username" | "name" | "bio" | "avatarUrl" | "createdAt"> & {
+type ProfileResponse = Pick<
+  User,
+  "id" | "username" | "name" | "bio" | "avatarUrl" | "createdAt"
+> & {
   portfolio?: PortfolioWork[]
   website?: string | null
-  socialLinks?: ProfileSettings["socialLinks"]
+  websiteUrl?: string | null
+  resumeUrl?: string | null
+  socialLinks?: ProfileSettings["socialLinks"] | User["socialLinks"]
   location?: LocationEntity | null
   userSkills?: UserSkill[]
   projectMembers?: ProjectMember[]
@@ -25,12 +37,14 @@ export function profileView(profile: ProfileResponse) {
     createdAt: profile.createdAt,
     city: profile.location?.name,
     portfolio: profile.portfolio ?? [],
-    website: profile.website,
-    socialLinks: profile.socialLinks,
-    skills: profile.userSkills?.flatMap(({ skill }) => skill ? [skill.name] : []) ?? [],
-    projects: profile.projectMembers?.flatMap(({ project }) => project
-      ? [{ id: project.id, name: project.name, slogan: project.slogan }]
-      : []) ?? [],
+    website: profile.websiteUrl ?? profile.website,
+    resume: profile.resumeUrl,
+    socialLinks: profileSocialLinks(profile.socialLinks),
+    skills: profile.userSkills?.flatMap(({ skill }) => (skill ? [skill.name] : [])) ?? [],
+    projects:
+      profile.projectMembers?.flatMap(({ project }) =>
+        project ? [{ id: project.id, name: project.name, slogan: project.slogan }] : [],
+      ) ?? [],
   }
 }
 
@@ -45,12 +59,15 @@ export async function getPublicProfile(username: string): Promise<ProfileRespons
 
 export async function getPublicProfileActivity(profile: ProfileResponse): Promise<ProfileActivity> {
   try {
-    const response = await fetch(authApiUrl(`users/${encodeURIComponent(profile.username)}/activity`), {
-      cache: "no-store",
-      signal: AbortSignal.timeout(5000),
-    })
+    const response = await fetch(
+      authApiUrl(`users/${encodeURIComponent(profile.username)}/activity`),
+      {
+        cache: "no-store",
+        signal: AbortSignal.timeout(5000),
+      },
+    )
     if (response.ok) {
-      const { items } = await response.json() as { items: ProfileActivityItem[] }
+      const { items } = (await response.json()) as { items: ProfileActivityItem[] }
       if (Array.isArray(items)) return { items, complete: true }
     }
   } catch {
@@ -61,15 +78,17 @@ export async function getPublicProfileActivity(profile: ProfileResponse): Promis
     if (!project) return []
     const authored = project.authorId === profile.id
     const type = authored ? "project_created" : "project_joined"
-    return [{
-      id: `${type}:${project.id}`,
-      type,
-      title: project.name,
-      detail: project.slogan,
-      occurredAt: authored ? project.createdAt : null,
-    }]
+    return [
+      {
+        id: `${type}:${project.id}`,
+        type,
+        title: project.name,
+        detail: project.slogan,
+        occurredAt: authored ? project.createdAt : null,
+      },
+    ]
   })
-  const timestamp = (date: string | null) => date ? Date.parse(date) || 0 : 0
+  const timestamp = (date: string | null) => (date ? Date.parse(date) || 0 : 0)
   items.sort((a, b) => timestamp(b.occurredAt) - timestamp(a.occurredAt))
   return { items: items.slice(0, 12), complete: false }
 }
@@ -105,7 +124,9 @@ export async function loadProfileSettings() {
   if ((!settingsResponse.ok && !legacy) || !skillsResponse.ok || !locationsResponse.ok) return null
 
   const [profile, skills, locations] = await Promise.all([
-    legacy ? loadLegacyProfile(session.accessToken) : settingsResponse.json() as Promise<ProfileSettings>,
+    legacy
+      ? loadLegacyProfile(session.accessToken)
+      : (settingsResponse.json() as Promise<ProfileSettings>),
     skillsResponse.json() as Promise<Skill[]>,
     locationsResponse.json() as Promise<LocationEntity[]>,
   ]).catch(() => [null, null, null] as const)

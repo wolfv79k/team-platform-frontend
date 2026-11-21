@@ -1,6 +1,12 @@
 import { authApi } from "@/services/auth.api"
 import { PROFILE_USERNAME_TAKEN, validateProfileUsername } from "@/shared/lib/profile-routes"
-import type { ProfileSettings } from "@/shared/lib/profile-settings"
+import {
+  profileSocialLinks,
+  socialFields,
+  validProfileLink,
+  webLink,
+  type ProfileSettings,
+} from "@/shared/lib/profile-settings"
 import type { Skill, User } from "@/types/models"
 
 export async function loadLegacyProfile(token: string): Promise<ProfileSettings | 401 | null> {
@@ -8,11 +14,11 @@ export async function loadLegacyProfile(token: string): Promise<ProfileSettings 
   if (response.status === 401 || response.status === 404) return 401
   if (!response.ok) return null
 
-  const account = await response.json() as User
+  const account = (await response.json()) as User
   const details = await authApi(`users/${encodeURIComponent(account.username)}`)
   if (!details.ok) return null
 
-  const profile = await details.json() as User
+  const profile = (await details.json()) as User
   if (profile.id !== account.id || !Array.isArray(profile.userSkills)) return null
 
   return {
@@ -24,8 +30,9 @@ export async function loadLegacyProfile(token: string): Promise<ProfileSettings 
     bio: account.bio,
     locationId: account.locationId,
     gender: null,
-    website: null,
-    socialLinks: null,
+    website: profile.websiteUrl ?? account.websiteUrl ?? null,
+    resume: profile.resumeUrl ?? account.resumeUrl ?? null,
+    socialLinks: profileSocialLinks(profile.socialLinks),
     avatarUrl: account.avatarUrl,
     userSkills: profile.userSkills.map(({ skillId }) => ({ skillId })),
   }
@@ -49,26 +56,65 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
   }
   if (!payload || typeof payload !== "object") return { error: "Проверьте данные профиля." }
 
-  const { username, firstName, lastName, bio, locationId, skillIds, gender, website, socialLinks } = payload as Record<string, unknown>
-  const hasLinks = socialLinks && typeof socialLinks === "object" && Object.values(socialLinks).some(Boolean)
-  if (gender || website || hasLinks) {
-    return { error: "Пол и ссылки можно будет сохранить после обновления сервера." }
+  const {
+    username,
+    firstName,
+    lastName,
+    bio,
+    locationId,
+    skillIds,
+    gender,
+    website = current.website ?? "",
+    resume = current.resume ?? "",
+    socialLinks,
+  } = payload as Record<string, unknown>
+  if (gender) {
+    return { error: "Пол пока сохраняется только в этом браузере." }
   }
-  if (typeof username !== "string" || typeof firstName !== "string" || typeof lastName !== "string"
-    || typeof bio !== "string" || (locationId !== null && !isId(locationId))
-    || !Array.isArray(skillIds) || !skillIds.every(isId)) {
+  if (!validProfileLink(website) || !validProfileLink(resume)) {
+    return {
+      error: "Укажите корректную ссылку на сайт или резюме, до 500 символов, с http или https.",
+    }
+  }
+  if (
+    socialLinks !== undefined &&
+    (!socialLinks || typeof socialLinks !== "object" || Array.isArray(socialLinks))
+  ) {
+    return { error: "Проверьте ссылки на социальные сети." }
+  }
+  const nextLinks = { ...current.socialLinks }
+  for (const { key, label } of socialFields) {
+    const value = (socialLinks as Record<string, unknown> | undefined)?.[key]
+    if (value === undefined) continue
+    if (!validProfileLink(value))
+      return { error: `Укажите корректную ссылку для ${label}, до 500 символов, с http или https.` }
+    nextLinks[key] = webLink(value)
+  }
+  if (
+    typeof username !== "string" ||
+    typeof firstName !== "string" ||
+    typeof lastName !== "string" ||
+    typeof bio !== "string" ||
+    (locationId !== null && !isId(locationId)) ||
+    !Array.isArray(skillIds) ||
+    !skillIds.every(isId)
+  ) {
     return { error: "Проверьте данные профиля." }
   }
 
   const nextUsername = username === current.username ? username : username.trim().toLowerCase()
-  const usernameError = nextUsername === current.username ? undefined : validateProfileUsername(nextUsername)
+  const usernameError =
+    nextUsername === current.username ? undefined : validateProfileUsername(nextUsername)
   if (usernameError) return { usernameError }
 
   const name = [firstName.trim(), lastName.trim()].filter(Boolean).join(" ")
   if (name.length > 100) return { error: "Имя и фамилия вместе должны занимать до 100 символов." }
-  if (bio !== current.bio && bio.length > 120) return { error: "Описание должно занимать до 120 символов." }
+  if (bio !== current.bio && bio.length > 120)
+    return { error: "Описание должно занимать до 120 символов." }
   if (locationId === null && current.locationId !== null) {
-    return { error: "На текущей версии сервера можно выбрать другой город. Убрать город пока нельзя." }
+    return {
+      error: "На текущей версии сервера можно выбрать другой город. Убрать город пока нельзя.",
+    }
   }
 
   const previousSkills = new Set(current.userSkills.map(({ skillId }) => skillId))
@@ -79,8 +125,9 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
   if (additions.length) {
     const catalog = await authApi("skills")
     if (!catalog.ok) return { error: "Не удалось проверить выбранные навыки. Попробуйте ещё раз." }
-    const available = new Set((await catalog.json() as Skill[]).map(({ id }) => id))
-    if (additions.some((id) => !available.has(id))) return { error: "Один из выбранных навыков больше недоступен." }
+    const available = new Set(((await catalog.json()) as Skill[]).map(({ id }) => id))
+    if (additions.some((id) => !available.has(id)))
+      return { error: "Один из выбранных навыков больше недоступен." }
   }
 
   const headers = { Authorization: `Bearer ${token}` }
@@ -90,23 +137,45 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
   if (name !== (current.name ?? "").trim().replace(/\s+/g, " ")) patch.name = name
   if (bio !== (current.bio ?? "")) patch.bio = bio.trim()
   if (locationId !== null && locationId !== current.locationId) patch.locationId = locationId
+  const nextWebsite = webLink(website)
+  const nextResume = webLink(resume)
+  if (nextWebsite !== (current.website ?? "")) patch.websiteUrl = nextWebsite
+  if (nextResume !== (current.resume ?? "")) patch.resumeUrl = nextResume
 
-  let saved = current
-  const retryMessage = "Не удалось сохранить все изменения. Повторите сохранение, чтобы завершить обновление."
+  const retryMessage =
+    "Не удалось сохранить все изменения. Повторите сохранение, чтобы завершить обновление."
   try {
     if (Object.keys(patch).length) {
-      const response = await authApi("users/me", { method: "PATCH", headers: jsonHeaders, body: JSON.stringify(patch) })
+      const response = await authApi("users/me", {
+        method: "PATCH",
+        headers: jsonHeaders,
+        body: JSON.stringify(patch),
+      })
       if (response.status === 401) return { redirectTo: login }
       if (response.status === 409) return { usernameError: PROFILE_USERNAME_TAKEN }
       if (!response.ok) {
         const body = await response.json().catch(() => null)
-        return { error: response.status === 400 && typeof body?.error === "string" ? body.error : retryMessage }
+        return {
+          error:
+            response.status === 400 && typeof body?.error === "string" ? body.error : retryMessage,
+        }
       }
-      const account = await response.json() as User
+      const account = (await response.json()) as User
       if (patch.username && account.username !== nextUsername) {
         return { usernameError: "Не удалось изменить ник. Попробуйте ещё раз." }
       }
-      saved = { ...saved, username: account.username, name: account.name, bio: account.bio, locationId: account.locationId }
+    }
+
+    for (const { key, platform } of socialFields) {
+      const value = nextLinks[key] ?? ""
+      if (value === (current.socialLinks?.[key] ?? "")) continue
+      const response = await authApi(`users/me/socials/${platform}`, {
+        method: value ? "PUT" : "DELETE",
+        headers: value ? jsonHeaders : headers,
+        ...(value ? { body: JSON.stringify({ url: value }) } : {}),
+      })
+      if (response.status === 401) return { redirectTo: login }
+      if (!response.ok && !(response.status === 404 && !value)) return { error: retryMessage }
     }
 
     for (const id of removals) {
@@ -115,7 +184,11 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
       if (!response.ok && response.status !== 404) return { error: retryMessage }
     }
     for (const id of additions) {
-      const response = await authApi(`users/me/skills/${id}`, { method: "PUT", headers: jsonHeaders, body: "{}" })
+      const response = await authApi(`users/me/skills/${id}`, {
+        method: "PUT",
+        headers: jsonHeaders,
+        body: "{}",
+      })
       if (response.status === 401) return { redirectTo: login }
       if (!response.ok) return { error: retryMessage }
     }
@@ -127,10 +200,21 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
       const response = await authApi("users/me/avatar", { method: "POST", headers, body: upload })
       if (response.status === 401) return { redirectTo: login }
       if (!response.ok) return { error: "Не удалось загрузить аватар. Повторите сохранение." }
-      saved = { ...saved, avatarUrl: (await response.json() as User).avatarUrl }
     }
 
-    return { profile: { ...saved, userSkills: [...nextSkills].map((skillId) => ({ skillId })) } }
+    const saved = await loadLegacyProfile(token)
+    if (saved === 401) return { redirectTo: login }
+    if (!saved) return { error: retryMessage }
+    if (
+      (saved.website ?? "") !== nextWebsite ||
+      (saved.resume ?? "") !== nextResume ||
+      socialFields.some(({ key }) => (saved.socialLinks?.[key] ?? "") !== (nextLinks[key] ?? ""))
+    ) {
+      return {
+        error: "Сервер не сохранил все ссылки. Повторите сохранение после обновления страницы.",
+      }
+    }
+    return { profile: saved }
   } catch {
     return { error: retryMessage }
   }

@@ -9,6 +9,16 @@ export enum SkillLevel {
   ADVANCED = 'ADVANCED',
 }
 
+export enum SocialPlatform {
+  GITHUB = 'GITHUB',
+  TELEGRAM = 'TELEGRAM',
+  VK = 'VK',
+  LINKEDIN = 'LINKEDIN',
+  BEHANCE = 'BEHANCE',
+  OTHER = 'OTHER',
+  DISCORD = 'DISCORD',
+}
+
 export enum ProjectStatus {
   RECRUITMENT = 'RECRUITMENT',
   IN_PROGRESS = 'IN_PROGRESS',

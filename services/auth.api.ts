@@ -5,9 +5,9 @@ export interface AuthResponse {
   user: User
 }
 
-export interface EmailCodeChallenge {
-  challengeId: string
-  resendAfterSeconds: number
+export interface EmailVerification {
+  email: string
+  verificationEmailSent: boolean | null
 }
 
 export function authApiUrl(path: string) {

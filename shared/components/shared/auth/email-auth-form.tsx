@@ -11,9 +11,13 @@ import { signIn } from "next-auth/react"
 import { Button } from "@/shared/components/ui/button"
 import { Input } from "@/shared/components/ui/input"
 import { authCompletePath } from "@/shared/lib/auth-redirect"
-import type { EmailCodeChallenge } from "@/services/auth.api"
-import { requestLoginCode, submitAuth } from "@/app/actions/auth"
-import { EmailCodeDialog } from "./email-code-dialog"
+import type { EmailVerification } from "@/services/auth.api"
+import { submitAuth } from "@/app/actions/auth"
+import {
+  rememberVerificationRequest,
+  verificationResendDeadline,
+} from "@/shared/lib/email-verification"
+import { EmailVerificationDialog } from "./email-verification-dialog"
 import { LocationField } from "./location-field"
 
 type Props = {
@@ -22,7 +26,8 @@ type Props = {
   oauthError?: boolean
   sessionExpired?: boolean
   registered?: boolean
-  emailCodeEnabled?: boolean
+  verified?: boolean
+  initialEmail?: string
 }
 
 export function EmailAuthForm({
@@ -31,17 +36,22 @@ export function EmailAuthForm({
   oauthError,
   sessionExpired,
   registered,
-  emailCodeEnabled,
+  verified,
+  initialEmail,
 }: Props) {
   const register = mode === "register"
   const [locationReady, setLocationReady] = useState(false)
-  const [useCode, setUseCode] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [pending, setPending] = useState<"email" | "github" | null>(null)
   const [error, setError] = useState(
     oauthError ? "Не удалось войти через GitHub. Попробуйте ещё раз." : "",
   )
-  const [codeDialog, setCodeDialog] = useState<{ email: string; challenge: EmailCodeChallenge }>()
+  const [verification, setVerification] = useState<{
+    details: EmailVerification
+    password: string
+    resendAt: number
+  }>()
+  const [verificationOpen, setVerificationOpen] = useState(false)
   const emailField = useRef<HTMLInputElement>(null)
   const switchPath = register ? "/login" : "/register"
   const switchUrl = callbackUrl
@@ -65,20 +75,31 @@ export function EmailAuthForm({
     event.preventDefault()
     if (pending || (register && !locationReady)) return
     const data = new FormData(event.currentTarget)
+    const email = String(data.get("email") ?? "").trim()
+    if (register && verification?.details.email === email) {
+      setVerificationOpen(true)
+      return
+    }
     setPending("email")
     setError("")
     try {
-      if (useCode) {
-        const email = String(data.get("email") ?? "").trim()
-        const result = await requestLoginCode(email)
-        if (result.challenge) setCodeDialog({ email, challenge: result.challenge })
-        else setError(result.error ?? "Попробуйте ещё раз.")
+      const result = await submitAuth(mode, data, callbackUrl)
+      if (result.redirectTo) {
+        window.location.assign(result.redirectTo)
+        return
+      }
+      if (result.verification) {
+        const details = result.verification
+        const resendAt =
+          details.verificationEmailSent === null
+            ? Math.max(
+                verification?.details.email === details.email ? verification.resendAt : 0,
+                verificationResendDeadline(details.email),
+              )
+            : rememberVerificationRequest(details.email)
+        setVerification({ details, password: String(data.get("password") ?? ""), resendAt })
+        setVerificationOpen(true)
       } else {
-        const result = await submitAuth(mode, data, callbackUrl)
-        if (result.redirectTo) {
-          window.location.assign(result.redirectTo)
-          return
-        }
         setError(result.error ?? "Попробуйте ещё раз.")
       }
     } catch {
@@ -87,8 +108,8 @@ export function EmailAuthForm({
     setPending(null)
   }
 
-  const submitLabel = useCode ? "Получить код" : register ? "Создать профиль" : "Войти"
-  const progressLabel = useCode ? "Отправляем код…" : register ? "Создаём профиль…" : "Входим…"
+  const submitLabel = register ? (verification ? "Подтвердить почту" : "Создать профиль") : "Войти"
+  const progressLabel = register ? "Создаём профиль…" : "Входим…"
 
   return (
     <section className="auth-page">
@@ -126,6 +147,12 @@ export function EmailAuthForm({
             <Input
               id="auth-email"
               ref={emailField}
+              defaultValue={initialEmail}
+              onChange={(event) => {
+                if (verification && event.target.value.trim() !== verification.details.email) {
+                  setVerification(undefined)
+                }
+              }}
               name="email"
               type="email"
               autoComplete="email"
@@ -135,35 +162,33 @@ export function EmailAuthForm({
               className="h-11 border-foreground/25"
             />
           </div>
-          {!useCode && (
-            <div className="field">
-              <label htmlFor="auth-password" className="text-sm font-medium">
-                Пароль <span className="required">*</span>
-              </label>
-              <div className="relative">
-                <Input
-                  id="auth-password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete={register ? "new-password" : "current-password"}
-                  required
-                  minLength={register ? 8 : undefined}
-                  maxLength={register ? 72 : 1024}
-                  className="h-11 border-foreground/25 pr-12"
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-0 right-0 size-11"
-                  aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
-                </Button>
-              </div>
+          <div className="field">
+            <label htmlFor="auth-password" className="text-sm font-medium">
+              Пароль <span className="required">*</span>
+            </label>
+            <div className="relative">
+              <Input
+                id="auth-password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete={register ? "new-password" : "current-password"}
+                required
+                minLength={register ? 8 : undefined}
+                maxLength={register ? 72 : 1024}
+                className="h-11 border-foreground/25 pr-12"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute top-0 right-0 size-11"
+                aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+              </Button>
             </div>
-          )}
+          </div>
           {register && (
             <>
               <div className="field">
@@ -192,11 +217,15 @@ export function EmailAuthForm({
               {error}
             </p>
           )}
-          {!error && (registered || sessionExpired) && (
+          {!error && (verified || registered || sessionExpired || verification) && (
             <p role="status" className="text-sm text-muted-foreground">
-              {registered
-                ? "Профиль создан. Войдите, чтобы продолжить."
-                : "Сессия истекла. Войдите снова."}
+              {verification
+                ? "Подтвердите почту, чтобы завершить регистрацию и войти."
+                : verified
+                  ? "Почта подтверждена. Войдите, чтобы продолжить."
+                  : registered
+                    ? "Профиль создан. Войдите, чтобы продолжить."
+                    : "Сессия истекла. Войдите снова."}
             </p>
           )}
           <Button
@@ -209,20 +238,6 @@ export function EmailAuthForm({
               <ArrowRight strokeWidth={1.65} />
             </span>
           </Button>
-          {emailCodeEnabled && !register && (
-            <Button
-              type="button"
-              variant="ghost"
-              className="h-10"
-              disabled={pending !== null}
-              onClick={() => {
-                setError("")
-                setUseCode(!useCode)
-              }}
-            >
-              {useCode ? "Войти с паролем" : "Войти по коду"}
-            </Button>
-          )}
         </form>
 
         <p className="auth-bottom">
@@ -231,13 +246,27 @@ export function EmailAuthForm({
         </p>
       </div>
 
-      {codeDialog && (
-        <EmailCodeDialog
-          email={codeDialog.email}
-          initialChallenge={codeDialog.challenge}
+      {verification && verificationOpen && (
+        <EmailVerificationDialog
+          verification={verification.details}
+          password={verification.password}
+          initialResendAt={Math.max(
+            verification.resendAt,
+            verificationResendDeadline(verification.details.email),
+          )}
           callbackUrl={callbackUrl}
           returnFocus={emailField}
-          onClose={() => setCodeDialog(undefined)}
+          onClose={() => setVerificationOpen(false)}
+          onResend={(resendAt) =>
+            setVerification(
+              (current) =>
+                current && {
+                  ...current,
+                  details: { ...current.details, verificationEmailSent: null },
+                  resendAt,
+                },
+            )
+          }
         />
       )}
     </section>

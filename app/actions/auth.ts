@@ -2,30 +2,33 @@
 
 import { CredentialsSignin } from "next-auth"
 import { auth, signIn } from "@/auth"
-import { authApi, loadLocations, postAuth, type EmailCodeChallenge } from "@/services/auth.api"
+import { authApi, loadLocations, postAuth, type EmailVerification } from "@/services/auth.api"
 import { authCompletePath, safeCallback } from "@/shared/lib/auth-redirect"
 import { OWN_PROFILE_PATH, validateProfileUsername } from "@/shared/lib/profile-routes"
 import type { LocationEntity } from "@/types/models"
 
 type AuthResult<T extends object> =
   | (T & { error?: never })
-  | ({ error: string } & { [Key in keyof T]?: never })
+  | ({ error: string; code?: string } & { [Key in keyof T]?: never })
+
+type AuthSubmission =
+  | { redirectTo: string; verification?: never }
+  | { verification: EmailVerification; redirectTo?: never }
 
 const messages: Record<string, string> = {
   invalid_password: "Проверьте почту и пароль.",
-  invalid_code: "Код неверный или истёк. Проверьте его или запросите новый.",
-  account_missing: "Аккаунт с этой почтой не найден. Сначала зарегистрируйтесь.",
+  email_not_verified: "Подтвердите почту, чтобы войти.",
 }
 
 const unavailable = "Сервис входа временно недоступен. Попробуйте ещё раз."
 
 function emailFrom(value: FormDataEntryValue | null) {
   const email = typeof value === "string" ? value.trim() : ""
-  return email.length <= 255 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : null
+  return email.length <= 255 && /^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+$/.test(email) ? email : null
 }
 
 async function startSession(
-  provider: "credentials" | "email-code",
+  provider: "credentials",
   credentials: Record<string, string>,
   callbackUrl?: string,
 ): Promise<AuthResult<{ redirectTo: string }>> {
@@ -37,6 +40,7 @@ async function startSession(
     return {
       error:
         error instanceof CredentialsSignin ? (messages[error.code] ?? unavailable) : unavailable,
+      code: error instanceof CredentialsSignin ? error.code : undefined,
     }
   }
 }
@@ -45,14 +49,20 @@ export async function submitAuth(
   mode: "login" | "register",
   data: FormData,
   callbackUrl?: string,
-): Promise<AuthResult<{ redirectTo: string }>> {
+): Promise<AuthResult<AuthSubmission>> {
   const email = emailFrom(data.get("email"))
   const password = data.get("password")
   if (!email) return { error: "Проверьте адрес электронной почты." }
   if (typeof password !== "string" || !password || password.length > 1024) {
     return { error: "Введите пароль." }
   }
-  if (mode === "login") return startSession("credentials", { email, password }, callbackUrl)
+  if (mode === "login") {
+    const result = await startSession("credentials", { email, password }, callbackUrl)
+    if (result.error && result.code === "email_not_verified") {
+      return { verification: { email, verificationEmailSent: null } }
+    }
+    return result
+  }
   if (mode !== "register") return { error: "Не удалось обработать форму." }
 
   const nickname = data.get("username")
@@ -74,59 +84,80 @@ export async function submitAuth(
     const response = await postAuth("register", { email, username, password, locationId })
     if (response.status === 409) {
       const { error } = await response.json().catch(() => ({}))
+      const login = await postAuth("login", { email, password })
+      if (login.status === 403) {
+        const result = await login.json().catch(() => null)
+        if (result?.code === "EMAIL_NOT_VERIFIED") {
+          return { verification: { email, verificationEmailSent: null } }
+        }
+      }
+      if (login.status >= 500) return { error: unavailable }
       return { error: typeof error === "string" ? error : "Почта или ник уже заняты." }
     }
     if (!response.ok) return { error: "Не удалось создать аккаунт. Попробуйте ещё раз." }
+    const registration = await response.json()
+    return {
+      verification: { email, verificationEmailSent: registration.verificationEmailSent === true },
+    }
   } catch {
     return { error: "Не удалось связаться с сервером. Попробуйте ещё раз." }
   }
-
-  const result = await startSession("credentials", { email, password }, callbackUrl)
-  if (result.redirectTo) return result
-  const callback = safeCallback(callbackUrl)
-  return {
-    redirectTo: callback
-      ? `/login?registered=1&callbackUrl=${encodeURIComponent(callback)}`
-      : "/login?registered=1",
-  }
 }
 
-export async function requestLoginCode(
+export async function resendVerificationCode(
   value: string,
-): Promise<AuthResult<{ challenge: EmailCodeChallenge }>> {
-  if (process.env.AUTH_EMAIL_CODE_ENABLED !== "true")
-    return { error: "Вход по коду пока недоступен." }
+): Promise<AuthResult<{ accepted: true }>> {
   const email = emailFrom(value)
   if (!email) return { error: "Проверьте адрес электронной почты." }
 
   try {
-    const response = await postAuth("email-code", { mode: "login", email })
+    const response = await postAuth("resend-verification", { email })
     if (response.status === 429) return { error: "Подождите перед повторным запросом кода." }
-    if (!response.ok) return { error: "Не удалось отправить код. Попробуйте ещё раз." }
-    const challenge = (await response.json()) as EmailCodeChallenge
-    if (
-      typeof challenge.challengeId !== "string" ||
-      !challenge.challengeId ||
-      challenge.challengeId.length > 128 ||
-      !Number.isSafeInteger(challenge.resendAfterSeconds) ||
-      challenge.resendAfterSeconds < 0
-    ) {
+    if (response.status !== 202) {
       return { error: "Не удалось отправить код. Попробуйте ещё раз." }
     }
-    return { challenge }
+    return { accepted: true }
   } catch {
     return { error: unavailable }
   }
 }
 
-export async function confirmEmailCode(
-  challengeId: string,
+export async function confirmEmailVerification(
+  value: string,
   code: string,
+  password: string,
   callbackUrl?: string,
 ): Promise<AuthResult<{ redirectTo: string }>> {
-  if (process.env.AUTH_EMAIL_CODE_ENABLED !== "true")
-    return { error: "Вход по коду пока недоступен." }
-  return startSession("email-code", { challengeId, code }, callbackUrl)
+  const email = emailFrom(value)
+  if (!email) return { error: "Проверьте адрес электронной почты." }
+  if (typeof code !== "string" || !/^[0-9]{6}$/.test(code)) {
+    return { error: "Введите шестизначный код из письма." }
+  }
+  if (typeof password !== "string" || !password || password.length > 1024) {
+    return { error: "Закройте окно и введите пароль ещё раз." }
+  }
+
+  try {
+    const response = await postAuth("verify-email", { email, code })
+    if (response.status === 400) {
+      return { error: "Код недействителен. Проверьте код или запросите новый." }
+    }
+    if (response.status === 429)
+      return { error: "Слишком много попыток. Запросите новый код позже." }
+    if (response.status !== 204)
+      return { error: "Не удалось подтвердить почту. Попробуйте ещё раз." }
+  } catch {
+    return { error: unavailable }
+  }
+
+  const result = await startSession("credentials", { email, password }, callbackUrl)
+  if (result.redirectTo) return result
+
+  // Verification succeeded even if creating the session failed. Continue from the login form.
+  const params = new URLSearchParams({ verified: "1", email })
+  const callback = safeCallback(callbackUrl)
+  if (callback) params.set("callbackUrl", callback)
+  return { redirectTo: `/login?${params}` }
 }
 
 export async function getAuthLocations(): Promise<AuthResult<{ locations: LocationEntity[] }>> {

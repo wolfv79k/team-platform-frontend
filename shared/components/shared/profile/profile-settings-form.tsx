@@ -47,10 +47,12 @@ function initialFields(profile: ProfileSettings) {
     location: profile.locationId?.toString() ?? "",
     gender: profile.gender ?? "",
     website: profile.website ?? "",
+    resume: profile.resume ?? "",
     telegram: profile.socialLinks?.telegram ?? "",
     linkedin: profile.socialLinks?.linkedin ?? "",
-    instagram: profile.socialLinks?.instagram ?? "",
-    figma: profile.socialLinks?.figma ?? "",
+    vk: profile.socialLinks?.vk ?? "",
+    behance: profile.socialLinks?.behance ?? "",
+    discord: profile.socialLinks?.discord ?? "",
     github: profile.socialLinks?.github ?? "",
     other: profile.socialLinks?.other ?? "",
   }
@@ -182,7 +184,7 @@ export default function ProfileSettingsForm({
       return
     }
 
-    const { location, firstName, lastName, bio, website } = fields
+    const { location, firstName, lastName, bio, website, resume } = fields
     const gender = genderKey ? (genderDraft ?? localGender) : fields.gender
     const data = new FormData()
     data.set(
@@ -195,6 +197,7 @@ export default function ProfileSettingsForm({
         gender: genderKey ? "" : gender,
         locationId: location ? Number(location) : null,
         website: webLink(website),
+        resume: webLink(resume),
         socialLinks: Object.fromEntries(socialFields.map(({ key }) => [key, webLink(fields[key])])),
         skillIds: selectedSkills,
       }),
@@ -271,7 +274,7 @@ export default function ProfileSettingsForm({
 
       {legacy && (
         <p className="settings-note border-b border-stroke px-4 py-3 sm:px-6">
-          Пол сохраняется в этом браузере. Ссылки можно будет изменить после обновления сервера.
+          Пол сохраняется в этом браузере.
         </p>
       )}
       <form className="edit-form" onSubmit={submit}>
@@ -475,25 +478,31 @@ export default function ProfileSettingsForm({
               </div>
             </div>
 
-            {/* Сайт или резюме */}
-            <div>
-              <label
-                htmlFor="profile-website"
-                className="mb-1.5 block text-xs font-medium text-ink"
-              >
-                Ссылка на ваш сайт/резюме
-              </label>
-
-              <Input
-                id="profile-website"
-                disabled={legacy}
-                inputMode="url"
-                maxLength={500}
-                value={fields.website}
-                onChange={(event) => updateField("website", event.target.value)}
-                placeholder="https://..."
-                className="h-9 border-stroke text-xs shadow-none focus-visible:ring-action"
-              />
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {(
+                [
+                  { key: "website", label: "Ссылка на сайт" },
+                  { key: "resume", label: "Ссылка на резюме" },
+                ] as const
+              ).map(({ key, label }) => (
+                <div key={key}>
+                  <label
+                    htmlFor={`profile-${key}`}
+                    className="mb-1.5 block text-xs font-medium text-ink"
+                  >
+                    {label}
+                  </label>
+                  <Input
+                    id={`profile-${key}`}
+                    inputMode="url"
+                    maxLength={500}
+                    value={fields[key]}
+                    onChange={(event) => updateField(key, event.target.value)}
+                    placeholder="https://..."
+                    className="h-9 border-stroke text-xs shadow-none focus-visible:ring-action"
+                  />
+                </div>
+              ))}
             </div>
           </section>
 
@@ -503,7 +512,7 @@ export default function ProfileSettingsForm({
             toggleSkill={toggleSkill}
             saving={saving}
           />
-          <ProfileSocialFields fields={fields} onChange={updateField} disabled={legacy} />
+          <ProfileSocialFields fields={fields} onChange={updateField} disabled={saving} />
         </fieldset>
         <footer className="form-footer">
           {error && (

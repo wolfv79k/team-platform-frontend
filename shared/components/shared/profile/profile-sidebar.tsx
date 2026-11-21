@@ -13,6 +13,7 @@ import {
 } from "@/shared/lib/profile-routes"
 import { useProfileSidebarStore } from "@/shared/store/profile-sidebar.store"
 import { ProfileAvatar, ProfileIcon } from "./profile-media"
+import { SignOutButton } from "@/shared/components/shared/auth/sign-out-button"
 
 export default function ProfileSidebar({
   username,
@@ -87,6 +88,7 @@ export default function ProfileSidebar({
               </Link>
             )
           })}
+          <SignOutButton />
         </nav>
         <section className="rounded-xl border border-account-stroke bg-account-panel px-[15px] py-[17px]">
           <h2 className="flex items-center gap-[9px] text-xs font-semibold">

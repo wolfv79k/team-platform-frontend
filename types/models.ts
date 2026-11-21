@@ -6,6 +6,7 @@ import type {
   ApplicationStatus,
   CommunityRole,
   NotificationType,
+  SocialPlatform,
 } from './enums'
 
 // USER
@@ -17,6 +18,9 @@ export interface User {
   name: string | null
   bio: string | null
   avatarUrl: string | null
+  websiteUrl?: string | null
+  resumeUrl?: string | null
+  socialLinks?: UserSocialLink[]
   role: AppRole
   createdAt: string
   locationId: number | null
@@ -41,6 +45,14 @@ export interface User {
 // Не передавать клиенту.
 export type UserRecord = User & {
   passwordHash: string
+}
+
+// USER SOCIAL LINK
+
+export interface UserSocialLink {
+  userId: number
+  platform: SocialPlatform
+  url: string
 }
 
 // SKILL

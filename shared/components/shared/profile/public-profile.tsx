@@ -96,7 +96,11 @@ export default function PublicProfile({
             </span>
           ))}
         </div>
-        <ProfileLinks website={profile.website} socialLinks={profile.socialLinks} />
+        <ProfileLinks
+          website={profile.website}
+          resume={profile.resume}
+          socialLinks={profile.socialLinks}
+        />
         <div className="public-profile-actions">
           <button type="button" className="btn secondary small" onClick={share}>
             <Icon icon={Copy} />

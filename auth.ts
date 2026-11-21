@@ -27,9 +27,9 @@ async function authenticate(path: string, data: Record<string, string>, invalidC
     throw new AuthAttemptError("unavailable")
   }
   if (response.status === 400 || response.status === 401) throw new AuthAttemptError(invalidCode)
-  if (path === "email-code/verify" && response.status === 409) {
+  if (response.status === 403) {
     const body = await response.json().catch(() => null)
-    if (body?.error === "account_missing") throw new AuthAttemptError("account_missing")
+    if (body?.code === "EMAIL_NOT_VERIFIED") throw new AuthAttemptError("email_not_verified")
   }
   if (!response.ok) throw new AuthAttemptError("unavailable")
 
@@ -81,17 +81,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return authenticate("login", { email: email.trim(), password }, "invalid_password")
       },
     }),
-    ...(process.env.AUTH_EMAIL_CODE_ENABLED === "true" ? [Credentials({
-      id: "email-code",
-      credentials: { challengeId: {}, code: {} },
-      async authorize({ challengeId, code }) {
-        if (typeof challengeId !== "string" || !challengeId || challengeId.length > 128
-          || typeof code !== "string" || !/^\d{6}$/.test(code)) {
-          throw new AuthAttemptError("invalid_code")
-        }
-        return authenticate("email-code/verify", { challengeId, code }, "invalid_code")
-      },
-    })] : []),
   ],
   callbacks: {
     async jwt({ token, account, profile, user }) {

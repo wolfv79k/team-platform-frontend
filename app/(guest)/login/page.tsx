@@ -9,9 +9,11 @@ export default async function LoginPage({
     error?: string
     reason?: string
     registered?: string
+    verified?: string
+    email?: string
   }>
 }) {
-  const { callbackUrl, error, reason, registered } = await searchParams
+  const { callbackUrl, error, reason, registered, verified, email } = await searchParams
   return (
     <EmailAuthForm
       mode="login"
@@ -19,7 +21,8 @@ export default async function LoginPage({
       oauthError={Boolean(error)}
       sessionExpired={reason === "session-expired"}
       registered={registered === "1"}
-      emailCodeEnabled={process.env.AUTH_EMAIL_CODE_ENABLED === "true"}
+      verified={verified === "1"}
+      initialEmail={typeof email === "string" ? email.slice(0, 255) : undefined}
     />
   )
 }
