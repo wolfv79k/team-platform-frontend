@@ -1,5 +1,5 @@
-import Catalog from "@/shared/components/shared/catalog/catalog"
+import RealCollectionCatalog from "@/shared/components/shared/catalog/real-collection-catalog"
 
 export default function Page() {
-  return <Catalog kind="communities" />
+  return <RealCollectionCatalog kind="communities" />
 }

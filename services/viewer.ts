@@ -2,7 +2,7 @@ import { auth } from "@/auth"
 import { authApiUrl } from "@/services/auth.api"
 import type { User } from "@/types/models"
 
-export type Viewer = { name: string; avatarUrl: string | null }
+export type Viewer = { id: number; username: string; name: string; avatarUrl: string | null }
 
 export async function getViewer(): Promise<Viewer | null> {
   const session = await auth()
@@ -21,5 +21,5 @@ export async function getViewer(): Promise<Viewer | null> {
     // Use the session profile while the API is unavailable.
   }
 
-  return { name: account.name || account.username, avatarUrl: account.avatarUrl }
+  return { id: account.id, username: account.username, name: account.name || account.username, avatarUrl: account.avatarUrl }
 }

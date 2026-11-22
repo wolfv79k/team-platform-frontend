@@ -1,5 +1,5 @@
-import Catalog from "@/shared/components/shared/catalog/catalog"
+import TeamCatalog from "@/shared/components/shared/catalog/team-catalog"
 
 export default function Page() {
-  return <Catalog kind="teams" />
+  return <TeamCatalog />
 }

@@ -1,4 +1,5 @@
 import type { LocationEntity, User } from "@/types/models"
+import { normalizeApiBaseUrl } from "./api-url"
 
 export interface AuthResponse {
   token: string
@@ -11,7 +12,7 @@ export interface EmailVerification {
 }
 
 export function authApiUrl(path: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL
+  const baseUrl = normalizeApiBaseUrl(process.env.NEXT_PUBLIC_API_URL)
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is missing")
   return `${baseUrl.replace(/\/+$/, "")}/api/${path}`
 }

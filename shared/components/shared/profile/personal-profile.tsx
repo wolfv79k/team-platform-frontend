@@ -19,6 +19,8 @@ import ProfileLinks from "./profile-links"
 import ProfilePortfolio from "./profile-portfolio"
 import ProfileSidebar from "./profile-sidebar"
 import { ProfileAvatar, ProfileIcon } from "./profile-media"
+import { levelLabels } from "@/shared/lib/project-display"
+import type { SkillLevel } from "@/types/enums"
 
 const tabs = [
   { key: "portfolio", label: "Портфолио", href: OWN_PROFILE_PATH },
@@ -36,7 +38,7 @@ const dateFormat = new Intl.DateTimeFormat("ru-RU", {
 const actionClass =
   "flex items-center justify-center gap-[9px] rounded-lg border border-account-stroke bg-account-panel font-medium hover:bg-account-interaction"
 
-function SkillBadge({ skill }: { skill: string }) {
+function SkillBadge({ skill, level }: { skill: string; level?: SkillLevel }) {
   const label = skill.toLowerCase()
 
   return (
@@ -52,6 +54,7 @@ function SkillBadge({ skill }: { skill: string }) {
       )}
       {label === "figma" && <ProfileIcon file="figma.png" size={14} />}
       {skill}
+      {level && <span className="text-account-subtle">· {levelLabels[level]}</span>}
     </li>
   )
 }
@@ -246,7 +249,12 @@ export default function PersonalProfile({ profile }: { profile: ProfileView }) {
 
           {activeTab === "projects" && (
             <>
-              <h2 className="text-section font-semibold">Проекты</h2>
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-section font-semibold">Проекты</h2>
+                <Link href="/projects/new" className={`${actionClass} min-h-8 px-3 py-1.5 text-compact`}>
+                  <ProfileIcon file="plus.svg" size={14} />Создать проект
+                </Link>
+              </div>
               {projects.length > 0 ? (
                 <ul className="mt-4 grid gap-[18px] sm:grid-cols-2">
                   {projects.map((project) => (
@@ -255,7 +263,7 @@ export default function PersonalProfile({ profile }: { profile: ProfileView }) {
                       className="rounded-xl border border-account-stroke bg-account-panel p-4"
                     >
                       <h3 className="text-body-large font-semibold [overflow-wrap:anywhere]">
-                        {project.name}
+                        <Link href={`/projects/${project.id}`} className="hover:text-account-link">{project.name}</Link>
                       </h3>
                       {project.slogan && (
                         <p className="mt-2 text-xs text-account-copy [overflow-wrap:anywhere]">
@@ -276,8 +284,8 @@ export default function PersonalProfile({ profile }: { profile: ProfileView }) {
               <h2 className="text-section font-semibold">Резюме</h2>
               {skills.length ? (
                 <ul className="mt-3 flex flex-wrap gap-2">
-                  {skills.map((skill) => (
-                    <SkillBadge key={skill} skill={skill} />
+                  {profile.skillDetails.map(({ name, level }) => (
+                    <SkillBadge key={name} skill={name} level={level} />
                   ))}
                 </ul>
               ) : (

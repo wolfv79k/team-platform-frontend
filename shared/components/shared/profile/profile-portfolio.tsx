@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { ProfileIcon } from "./profile-media"
 
 import type { PortfolioWork } from "@/types/models"
@@ -29,7 +30,9 @@ export default function ProfilePortfolio({ works }: { works: PortfolioWork[] }) 
             )}
             <div className="p-4">
               <h3 className="text-body-large leading-[22.5px] font-semibold tracking-[-.2px]">
-                {href ? (
+                {work.projectId ? (
+                  <Link href={`/projects/${work.projectId}`} className="hover:text-account-link">{work.title}</Link>
+                ) : href ? (
                   <a
                     href={href}
                     rel="noreferrer"

@@ -30,6 +30,7 @@ import {
   type ProfileSettings,
 } from "@/shared/lib/profile-settings"
 import type { LocationEntity, Skill } from "@/types/models"
+import { SkillLevel } from "@/types/enums"
 
 const subscribeToStorage = (notify: () => void) => {
   window.addEventListener("storage", notify)
@@ -86,7 +87,7 @@ export default function ProfileSettingsForm({
   )
   const [fields, setFields] = useState(() => initialFields(profile))
   const [selectedSkills, setSelectedSkills] = useState(() =>
-    profile.userSkills.map(({ skillId }) => skillId),
+    profile.userSkills,
   )
   const [usernameFeedback, setUsernameFeedback] = useState<{
     value: string
@@ -144,9 +145,14 @@ export default function ProfileSettingsForm({
 
   function toggleSkill(id: number) {
     setSelectedSkills((previous) => {
-      if (previous.includes(id)) return previous.filter((selected) => selected !== id)
-      return previous.length < 10 ? [...previous, id] : previous
+      if (previous.some(({ skillId }) => skillId === id)) return previous.filter(({ skillId }) => skillId !== id)
+      return previous.length < 10 ? [...previous, { skillId: id, skillLevel: SkillLevel.BEGINNER }] : previous
     })
+    setNotice("")
+  }
+
+  function changeSkillLevel(id: number, skillLevel: SkillLevel) {
+    setSelectedSkills((previous) => previous.map((skill) => skill.skillId === id ? { ...skill, skillLevel } : skill))
     setNotice("")
   }
 
@@ -199,7 +205,8 @@ export default function ProfileSettingsForm({
         website: webLink(website),
         resume: webLink(resume),
         socialLinks: Object.fromEntries(socialFields.map(({ key }) => [key, webLink(fields[key])])),
-        skillIds: selectedSkills,
+        skillIds: selectedSkills.map(({ skillId }) => skillId),
+        skillLevels: Object.fromEntries(selectedSkills.map(({ skillId, skillLevel }) => [skillId, skillLevel])),
       }),
     )
     if (avatarFile) data.set("avatar", avatarFile)
@@ -207,7 +214,7 @@ export default function ProfileSettingsForm({
     setSaving(true)
     try {
       const result = await saveProfile(data)
-      if (result.redirectTo) {
+      if (typeof result.redirectTo === "string") {
         window.location.assign(result.redirectTo)
         return
       }
@@ -224,7 +231,7 @@ export default function ProfileSettingsForm({
       setUsernameFeedback(null)
       setSavedProfile(result.profile)
       setFields(initialFields(result.profile))
-      setSelectedSkills(result.profile.userSkills.map(({ skillId }) => skillId))
+      setSelectedSkills(result.profile.userSkills)
       setAvatarFile(null)
       setAvatarPreview(null)
       if (genderKey) {
@@ -510,6 +517,7 @@ export default function ProfileSettingsForm({
             skills={skills}
             selectedSkills={selectedSkills}
             toggleSkill={toggleSkill}
+            changeSkillLevel={changeSkillLevel}
             saving={saving}
           />
           <ProfileSocialFields fields={fields} onChange={updateField} disabled={saving} />

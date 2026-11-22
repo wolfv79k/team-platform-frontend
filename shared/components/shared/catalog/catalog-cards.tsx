@@ -27,50 +27,6 @@ function Cover({ photo, name }: { photo: CatalogPhoto; name?: string }) {
   )
 }
 
-export function ProjectCard({ project }: { project: Item<"projects"> }) {
-  const photo = (catalogPreview.demoProjectPhotos as Record<number, CatalogPhoto>)[project.id]
-  return (
-    <article className="project-catalog-card">
-      <Link
-        className="project-tile"
-        href={`/projects/${project.id}`}
-        aria-labelledby={`catalog-title-${project.id}`}
-      >
-        {photo && (
-          <div className="project-tile-photo">
-            <PhotoCover photo={photo} />
-          </div>
-        )}
-        <div className="project-tile-body">
-          <div className="project-tile-meta">
-            <Tag
-              tone={
-                project.status === "Набор в команду"
-                  ? "blue"
-                  : project.status === "В работе"
-                    ? "green"
-                    : ""
-              }
-            >
-              {project.status}
-            </Tag>
-            <Icon icon={ArrowUpRight} className="project-tile-arrow" />
-          </div>
-          <h2 id={`catalog-title-${project.id}`}>{project.name}</h2>
-          <p className="project-tile-description">{project.slogan || project.description}</p>
-          <Skills names={project.skills} />
-          {project.need && (
-            <p className="project-tile-role">
-              <Icon icon={Users} />
-              <span>Открытая роль: {project.need}</span>
-            </p>
-          )}
-        </div>
-      </Link>
-    </article>
-  )
-}
-
 export function IdeaCard({ idea }: { idea: Item<"ideas"> }) {
   const author = person(idea.authorId)
   return (

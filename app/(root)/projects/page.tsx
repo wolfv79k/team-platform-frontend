@@ -1,5 +1,5 @@
-import Catalog from "@/shared/components/shared/catalog/catalog"
+import ProjectCatalog from "@/shared/components/shared/catalog/project-catalog"
 
 export default function Page() {
-  return <Catalog kind="projects" />
+  return <ProjectCatalog />
 }

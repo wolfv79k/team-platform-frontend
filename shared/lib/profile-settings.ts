@@ -1,4 +1,4 @@
-import { SocialPlatform } from "@/types/enums"
+import { SkillLevel, SocialPlatform } from "@/types/enums"
 import type { UserSocialLink } from "@/types/models"
 
 export const socialFields = [
@@ -62,7 +62,7 @@ export type ProfileSettings = {
   resume?: string | null
   socialLinks: Partial<Record<SocialKey, string>> | null
   avatarUrl: string | null
-  userSkills: { skillId: number }[]
+  userSkills: { skillId: number; skillLevel: SkillLevel }[]
 }
 
 export function profileSocialLinks(

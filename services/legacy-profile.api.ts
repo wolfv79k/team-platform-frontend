@@ -8,6 +8,7 @@ import {
   type ProfileSettings,
 } from "@/shared/lib/profile-settings"
 import type { Skill, User } from "@/types/models"
+import { SkillLevel } from "@/types/enums"
 
 export async function loadLegacyProfile(token: string): Promise<ProfileSettings | 401 | null> {
   const response = await authApi("auth/me", { headers: { Authorization: `Bearer ${token}` } })
@@ -34,7 +35,7 @@ export async function loadLegacyProfile(token: string): Promise<ProfileSettings 
     resume: profile.resumeUrl ?? account.resumeUrl ?? null,
     socialLinks: profileSocialLinks(profile.socialLinks),
     avatarUrl: account.avatarUrl,
-    userSkills: profile.userSkills.map(({ skillId }) => ({ skillId })),
+    userSkills: profile.userSkills.map(({ skillId, skillLevel }) => ({ skillId, skillLevel: skillLevel ?? SkillLevel.BEGINNER })),
   }
 }
 
@@ -63,6 +64,7 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
     bio,
     locationId,
     skillIds,
+    skillLevels,
     gender,
     website = current.website ?? "",
     resume = current.resume ?? "",
@@ -117,10 +119,20 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
     }
   }
 
-  const previousSkills = new Set(current.userSkills.map(({ skillId }) => skillId))
+  const previousSkills = new Map(current.userSkills.map(({ skillId, skillLevel }) => [skillId, skillLevel]))
+  if (skillLevels !== undefined && (!skillLevels || typeof skillLevels !== "object" || Array.isArray(skillLevels))) {
+    return { error: "Проверьте уровни навыков." }
+  }
+  const levels = skillLevels === undefined
+    ? Object.fromEntries(skillIds.map((id) => [id, previousSkills.get(id) ?? SkillLevel.BEGINNER]))
+    : skillLevels as Record<string, unknown>
+  if (skillIds.some((id) => !Object.values(SkillLevel).includes(levels[id] as SkillLevel))) {
+    return { error: "Выберите корректный уровень навыка." }
+  }
   const nextSkills = new Set(skillIds)
   const additions = [...nextSkills].filter((id) => !previousSkills.has(id))
-  const removals = [...previousSkills].filter((id) => !nextSkills.has(id))
+  const changes = [...nextSkills].filter((id) => previousSkills.get(id) !== levels[id])
+  const removals = [...previousSkills.keys()].filter((id) => !nextSkills.has(id))
   if (nextSkills.size > 10 && additions.length) return { error: "Можно выбрать до 10 навыков." }
   if (additions.length) {
     const catalog = await authApi("skills")
@@ -183,11 +195,11 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
       if (response.status === 401) return { redirectTo: login }
       if (!response.ok && response.status !== 404) return { error: retryMessage }
     }
-    for (const id of additions) {
+    for (const id of changes) {
       const response = await authApi(`users/me/skills/${id}`, {
         method: "PUT",
         headers: jsonHeaders,
-        body: "{}",
+        body: JSON.stringify({ skillLevel: levels[id] }),
       })
       if (response.status === 401) return { redirectTo: login }
       if (!response.ok) return { error: retryMessage }
@@ -208,10 +220,12 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
     if (
       (saved.website ?? "") !== nextWebsite ||
       (saved.resume ?? "") !== nextResume ||
-      socialFields.some(({ key }) => (saved.socialLinks?.[key] ?? "") !== (nextLinks[key] ?? ""))
+      socialFields.some(({ key }) => (saved.socialLinks?.[key] ?? "") !== (nextLinks[key] ?? "")) ||
+      saved.userSkills.length !== nextSkills.size ||
+      saved.userSkills.some(({ skillId, skillLevel }) => !nextSkills.has(skillId) || levels[skillId] !== skillLevel)
     ) {
       return {
-        error: "Сервер не сохранил все ссылки. Повторите сохранение после обновления страницы.",
+        error: "Сервер не сохранил все изменения профиля. Повторите сохранение после обновления страницы.",
       }
     }
     return { profile: saved }

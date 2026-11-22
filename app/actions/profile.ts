@@ -10,7 +10,7 @@ import {
   PROFILE_USERNAME_TAKEN,
   validateProfileUsername,
 } from "@/shared/lib/profile-routes"
-import { avatarError, type ProfileSettings } from "@/shared/lib/profile-settings"
+import { avatarError } from "@/shared/lib/profile-settings"
 
 function revalidateProfilePages() {
   revalidatePath("/", "layout")
@@ -50,29 +50,9 @@ export async function saveProfile(data: FormData) {
   }
 
   try {
-    const response = await authApi("users/me/settings", {
-      method: "PATCH",
-      headers: { Authorization: `Bearer ${session.accessToken}` },
-      body: data,
-    })
-    if (response.status === 401) return { redirectTo: login }
-    if (response.status === 404) {
-      const result = await saveLegacyProfile(data, session.accessToken, login)
-      revalidateProfilePages()
-      return result
-    }
-    if (response.status === 409) return { usernameError: PROFILE_USERNAME_TAKEN }
-    if (!response.ok) {
-      const body = await response.json().catch(() => null)
-      if ([400, 409, 502].includes(response.status) && typeof body?.error === "string") {
-        return { error: body.error }
-      }
-      return { error: "Не удалось сохранить изменения. Попробуйте ещё раз." }
-    }
-
-    const profile = (await response.json()) as ProfileSettings
+    const result = await saveLegacyProfile(data, session.accessToken, login)
     revalidateProfilePages()
-    return { profile }
+    return result
   } catch {
     return { error: "Не удалось связаться с сервером. Попробуйте ещё раз." }
   }

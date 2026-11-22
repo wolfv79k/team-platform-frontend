@@ -1,5 +1,5 @@
-import EntityForm from "@/shared/components/shared/catalog/entity-form"
+import TeamForm from "@/shared/components/shared/catalog/team-form"
 
 export default function Page() {
-  return <EntityForm kind="teams" />
+  return <TeamForm />
 }

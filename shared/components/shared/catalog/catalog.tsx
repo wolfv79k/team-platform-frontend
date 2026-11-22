@@ -8,11 +8,11 @@ import { useState } from "react"
 import { catalogPreview } from "@/shared/data/catalog-preview"
 import { Icon } from "@/shared/components/ui/icon"
 import { eventIsPast } from "@/shared/lib/catalog-preview"
-import { CommunityCard, EventCard, IdeaCard, ProjectCard, TeamCard } from "./catalog-cards"
+import { CommunityCard, EventCard, IdeaCard, TeamCard } from "./catalog-cards"
 import { catalogs, type CatalogKind } from "@/shared/lib/catalog-config"
 import { BrowseLayout } from "@/shared/components/shared/layout/browse-layout"
 
-export default function Catalog({ kind }: { kind: CatalogKind }) {
+export default function Catalog({ kind }: { kind: Exclude<CatalogKind, "projects"> }) {
   const config = catalogs[kind]
   const initial = config.filters[0][0]
   const [filter, setFilter] = useState<string>(initial)
@@ -25,12 +25,6 @@ export default function Catalog({ kind }: { kind: CatalogKind }) {
   let listClass = ""
 
   switch (kind) {
-    case "projects":
-      listClass = "project-cards"
-      cards = catalogPreview.projects
-        .filter((item) => matches(item) && (filter === "all" || item.status === filter))
-        .map((item) => <ProjectCard key={item.id} project={item} />)
-      break
     case "ideas":
       listClass = "idea-index"
       cards = catalogPreview.ideas
@@ -92,7 +86,7 @@ export default function Catalog({ kind }: { kind: CatalogKind }) {
           <label className="searchbox">
             <Icon icon={Search} />
             <input
-              id={kind === "projects" ? "catalog-search" : "collection-search"}
+              id="collection-search"
               type="search"
               aria-label="Поиск по названию"
               placeholder="Поиск по названию"
@@ -139,7 +133,7 @@ export default function Catalog({ kind }: { kind: CatalogKind }) {
         </div>
       </section>
       <section
-        className={`catalog-list ${kind === "projects" ? "project-catalog" : ""}`}
+        className="catalog-list"
         aria-label={config.title}
         aria-live="polite"
       >

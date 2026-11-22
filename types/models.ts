@@ -334,6 +334,7 @@ export interface Notification {
 
 export interface PortfolioWork {
   id: number
+  projectId?: number
   title: string
   description?: string
   contribution?: string

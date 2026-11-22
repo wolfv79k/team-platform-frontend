@@ -5,16 +5,25 @@ import axios from "axios";
 import { getSession, signOut } from "next-auth/react";
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  // Same-origin requests work with the backend's single configured CORS origin.
+  baseURL: "/backend",
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 15_000,
+  timeout: 75_000,
 });
+
+// A catalog loads multiple queries in parallel; reuse its in-flight session request.
+let pendingSession: ReturnType<typeof getSession> | undefined;
+function requestSession() {
+  if (!pendingSession) pendingSession = getSession().finally(() => { pendingSession = undefined; });
+  return pendingSession;
+}
 
 apiClient.interceptors.request.use(
   async (config) => {
-    const session = await getSession();
+    if (!process.env.NEXT_PUBLIC_API_URL) throw new Error("Не настроен NEXT_PUBLIC_API_URL.");
+    const session = await requestSession();
     const token = session?.accessToken;
 
     if (token) {

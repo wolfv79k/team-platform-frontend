@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation"
-import EntityForm from "@/shared/components/shared/catalog/entity-form"
-import { catalogPreview } from "@/shared/data/catalog-preview"
+import RealCollectionForm from "@/shared/components/shared/catalog/real-collection-form"
+import { parseProjectId } from "@/shared/lib/project-display"
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  const item = catalogPreview.ideas.find((item) => String(item.id) === id && item.authorId === 1)
-  if (!item) notFound()
-  return <EntityForm kind="ideas" editId={item.id} />
+  const id = parseProjectId((await params).id)
+  if (!id) notFound()
+  return <RealCollectionForm kind="ideas" id={id} />
 }

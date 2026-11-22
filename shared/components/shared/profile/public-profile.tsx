@@ -4,13 +4,15 @@ import "@/app/styles/public-profile.css"
 
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Box, Briefcase, Calendar, Copy, MapPin, MessageCircle } from "lucide-react"
 import type { ProfileView } from "@/services/users.api"
 import type { ProfileActivityItem } from "@/shared/lib/profile-activity"
 import ProfileLinks from "./profile-links"
 import ProfilePortfolio from "./profile-portfolio"
 import { Icon } from "@/shared/components/ui/icon"
-import { Skills } from "@/shared/components/shared/catalog/catalog-tags"
+import { Tag } from "@/shared/components/shared/catalog/catalog-tags"
+import { levelLabels } from "@/shared/lib/project-display"
 
 const tabs = [
   ["portfolio", "Портфолио"],
@@ -159,7 +161,7 @@ export default function PublicProfile({
               {projects.map((project) => (
                 <article key={project.id} className="profile-project-row">
                   <div>
-                    <h3>{project.name}</h3>
+                    <h3><Link href={`/projects/${project.id}`}>{project.name}</Link></h3>
                     {project.slogan && <p>{project.slogan}</p>}
                   </div>
                 </article>
@@ -176,8 +178,10 @@ export default function PublicProfile({
       {tab === "resume" && (
         <section className="empty-tab">
           <Icon icon={Briefcase} />
-          <h2>Опыт пока не добавлен</h2>
-          <Skills names={skills} />
+          <h2>{profile.skillDetails.length ? "Навыки" : "Опыт пока не добавлен"}</h2>
+          <div className="flex flex-wrap justify-center gap-2">
+            {profile.skillDetails.map(({ name, level }) => <Tag key={name}>{name} · {levelLabels[level]}</Tag>)}
+          </div>
         </section>
       )}
       {tab === "posts" &&
@@ -193,7 +197,7 @@ export default function PublicProfile({
         ) : (
           <div className="empty-tab">
             <Icon icon={MessageCircle} />
-            <h2>Пока нет постов</h2>
+            <h2>Публикации пока недоступны</h2>
           </div>
         ))}
     </article>
