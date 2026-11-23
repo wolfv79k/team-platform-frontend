@@ -204,7 +204,9 @@ export default function ProfileSettingsForm({
         locationId: location ? Number(location) : null,
         website: webLink(website),
         resume: webLink(resume),
-        socialLinks: Object.fromEntries(socialFields.map(({ key }) => [key, webLink(fields[key])])),
+        socialLinks: Object.fromEntries(
+          socialFields.filter(({ key }) => key !== "github").map(({ key }) => [key, webLink(fields[key])]),
+        ),
         skillIds: selectedSkills.map(({ skillId }) => skillId),
         skillLevels: Object.fromEntries(selectedSkills.map(({ skillId, skillLevel }) => [skillId, skillLevel])),
       }),

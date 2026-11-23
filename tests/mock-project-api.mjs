@@ -23,6 +23,7 @@ const roles = [
   { id: 2, name: "Backend" },
 ]
 const userSkills = new Map()
+const userSocialLinks = new Map()
 const projects = []
 const applications = []
 const ideas = [
@@ -148,6 +149,16 @@ const server = createServer(async (req, res) => {
       return send(200, item)
     }
     if (method === "DELETE") return userSkills.delete(key) ? send(204) : fail(404, "Навык не найден в профиле")
+  }
+  if (resource === "users" && id === "me" && sub === "socials") {
+    if (!auth) return fail(401, "Unauthorized")
+    const key = `${auth.id}:${arg}`
+    if (method === "PUT") {
+      const item = { userId: auth.id, platform: arg, url: body.url }
+      userSocialLinks.set(key, item)
+      return send(200, item)
+    }
+    if (method === "DELETE") return userSocialLinks.delete(key) ? send(204) : fail(404, "Ссылка не найдена")
   }
   if (resource === "users") {
     const user = users.find((user) => user.username === id)
@@ -384,7 +395,7 @@ function profile(user) {
     ...user,
     location: { id: 1, name: "Санкт-Петербург" },
     userSkills: [...userSkills.values()].filter((item) => item.userId === user.id),
-    socialLinks: [],
+    socialLinks: [...userSocialLinks.values()].filter((item) => item.userId === user.id),
     projectMembers: projects.flatMap((project) =>
       project.projectMembers
         .filter((member) => member.userId === user.id)

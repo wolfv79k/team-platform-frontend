@@ -19,6 +19,23 @@ function revalidateProfilePages() {
   revalidatePath("/[username]", "page")
 }
 
+export async function disconnectGithub() {
+  const session = await auth()
+  if (!session?.accessToken || !session.appUser?.id) return { error: "Войдите в аккаунт." }
+  try {
+    const response = await authApi("users/me/socials/GITHUB", {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${session.accessToken}` },
+    })
+    if (!response.ok && response.status !== 404)
+      return { error: "Не удалось отключить GitHub. Попробуйте ещё раз." }
+    revalidateProfilePages()
+    return { success: true }
+  } catch {
+    return { error: "Не удалось отключить GitHub. Попробуйте ещё раз." }
+  }
+}
+
 export async function checkProfileUsername(value: string) {
   const session = await auth()
   if (!session?.accessToken || !session.appUser?.id) return

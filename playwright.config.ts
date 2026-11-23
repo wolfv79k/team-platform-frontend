@@ -1,4 +1,5 @@
 import { defineConfig } from "@playwright/test"
+import { resolve } from "node:path"
 
 const frontendPort = process.env.PLAYWRIGHT_FRONTEND_PORT || "3107"
 const backendPort = process.env.PLAYWRIGHT_BACKEND_PORT || "3108"
@@ -28,6 +29,8 @@ export default defineConfig({
       reuseExistingServer: false,
       timeout: 120_000,
       env: {
+        NODE_OPTIONS:
+          `${process.env.NODE_OPTIONS ?? ""} --require="${resolve("tests/mock-github-fetch.cjs").replaceAll("\\", "/")}"`.trim(),
         NEXT_PUBLIC_API_URL: backend,
         PLAYWRIGHT_TEST_DIST_DIR: ".next/playwright",
         AUTH_URL: frontend,

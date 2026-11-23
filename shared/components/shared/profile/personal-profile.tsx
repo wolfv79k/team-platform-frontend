@@ -2,11 +2,9 @@
 
 import "@/app/styles/personal-profile.css"
 
-import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
 import type { ProfileView } from "@/services/users.api"
-import { Button } from "@/shared/components/ui/button"
 import {
   ADD_PROJECT_PATH,
   OWN_PROFILE_PATH,
@@ -21,6 +19,8 @@ import ProfileSidebar from "./profile-sidebar"
 import { ProfileAvatar, ProfileIcon } from "./profile-media"
 import { levelLabels } from "@/shared/lib/project-display"
 import type { SkillLevel } from "@/types/enums"
+import { GithubConnectButton, GithubConnectionNotice } from "./github-connect-button"
+import GithubPortfolio from "./github-portfolio"
 
 const tabs = [
   { key: "portfolio", label: "Портфолио", href: OWN_PROFILE_PATH },
@@ -213,22 +213,12 @@ export default function PersonalProfile({ profile }: { profile: ProfileView }) {
                   Добавить работу
                   <ProfileIcon file="plus.svg" size={16} />
                 </Link>
-                <Button
-                  type="button"
-                  variant="outline"
+                <GithubConnectButton
+                  value={profile.socialLinks?.github}
                   className={`${actionClass} h-11 text-compact leading-normal`}
-                >
-                  <Image
-                    src="/icons/profile/github.png"
-                    width={18}
-                    height={18}
-                    alt=""
-                    className="size-[18px]!"
-                  />
-                  GitHub
-                  <ProfileIcon file="plus.svg" size={16} />
-                </Button>
+                />
               </div>
+              <GithubConnectionNotice connected={!!profile.githubConnection} />
               {profile.portfolio.length > 0 ? (
                 <ProfilePortfolio works={profile.portfolio} />
               ) : (
@@ -244,6 +234,7 @@ export default function PersonalProfile({ profile }: { profile: ProfileView }) {
                   </p>
                 </div>
               )}
+              <GithubPortfolio connection={profile.githubConnection} />
             </>
           )}
 

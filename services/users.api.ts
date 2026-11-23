@@ -6,6 +6,8 @@ import type { ProfileActivity, ProfileActivityItem } from "@/shared/lib/profile-
 import { OWN_PROFILE_PATH, PROFILE_SETTINGS_PATH } from "@/shared/lib/profile-routes"
 import { profileSocialLinks, type ProfileSettings } from "@/shared/lib/profile-settings"
 import { httpUrl } from "@/shared/lib/project-display"
+import { readGithubConnection } from "@/services/github-connection.server"
+import { githubProfileUrl } from "@/shared/lib/github-profile"
 import type {
   LocationEntity,
   PortfolioWork,
@@ -31,6 +33,10 @@ type ProfileResponse = Pick<
 
 export function profileView(profile: ProfileResponse) {
   const memberships = profile.projectMembers ?? []
+  const socialLinks = { ...profileSocialLinks(profile.socialLinks) }
+  const githubConnection = readGithubConnection(profile.id, socialLinks.github)
+  if (githubConnection) socialLinks.github = githubProfileUrl(githubConnection.login)
+  else delete socialLinks.github
   return {
     username: profile.username,
     name: profile.name,
@@ -51,7 +57,8 @@ export function profileView(profile: ProfileResponse) {
     ),
     website: profile.websiteUrl ?? profile.website,
     resume: profile.resumeUrl,
-    socialLinks: profileSocialLinks(profile.socialLinks),
+    socialLinks,
+    githubConnection,
     skills: profile.userSkills?.flatMap(({ skill }) => (skill ? [skill.name] : [])) ?? [],
     skillDetails: profile.userSkills?.flatMap(({ skill, skillLevel }) => skill ? [{ name: skill.name, level: skillLevel }] : []) ?? [],
     projects:

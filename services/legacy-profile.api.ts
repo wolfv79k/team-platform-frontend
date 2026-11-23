@@ -9,6 +9,8 @@ import {
 } from "@/shared/lib/profile-settings"
 import type { Skill, User } from "@/types/models"
 import { SkillLevel } from "@/types/enums"
+import { githubProfileUrl } from "@/shared/lib/github-profile"
+import { readGithubConnection } from "@/services/github-connection.server"
 
 export async function loadLegacyProfile(token: string): Promise<ProfileSettings | 401 | null> {
   const response = await authApi("auth/me", { headers: { Authorization: `Bearer ${token}` } })
@@ -21,6 +23,10 @@ export async function loadLegacyProfile(token: string): Promise<ProfileSettings 
 
   const profile = (await details.json()) as User
   if (profile.id !== account.id || !Array.isArray(profile.userSkills)) return null
+  const socialLinks = { ...profileSocialLinks(profile.socialLinks) }
+  const githubConnection = readGithubConnection(account.id, socialLinks.github)
+  if (githubConnection) socialLinks.github = githubProfileUrl(githubConnection.login)
+  else delete socialLinks.github
 
   return {
     id: account.id,
@@ -33,7 +39,7 @@ export async function loadLegacyProfile(token: string): Promise<ProfileSettings 
     gender: null,
     website: profile.websiteUrl ?? account.websiteUrl ?? null,
     resume: profile.resumeUrl ?? account.resumeUrl ?? null,
-    socialLinks: profileSocialLinks(profile.socialLinks),
+    socialLinks,
     avatarUrl: account.avatarUrl,
     userSkills: profile.userSkills.map(({ skillId, skillLevel }) => ({ skillId, skillLevel: skillLevel ?? SkillLevel.BEGINNER })),
   }
@@ -88,6 +94,11 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
   for (const { key, label } of socialFields) {
     const value = (socialLinks as Record<string, unknown> | undefined)?.[key]
     if (value === undefined) continue
+    if (key === "github") {
+      if (value !== (current.socialLinks?.github ?? ""))
+        return { error: "Подключите свой аккаунт через GitHub." }
+      continue
+    }
     if (!validProfileLink(value))
       return { error: `Укажите корректную ссылку для ${label}, до 500 символов, с http или https.` }
     nextLinks[key] = webLink(value)
@@ -179,6 +190,7 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
     }
 
     for (const { key, platform } of socialFields) {
+      if (key === "github") continue
       const value = nextLinks[key] ?? ""
       if (value === (current.socialLinks?.[key] ?? "")) continue
       const response = await authApi(`users/me/socials/${platform}`, {
@@ -220,7 +232,7 @@ export async function saveLegacyProfile(data: FormData, token: string, login: st
     if (
       (saved.website ?? "") !== nextWebsite ||
       (saved.resume ?? "") !== nextResume ||
-      socialFields.some(({ key }) => (saved.socialLinks?.[key] ?? "") !== (nextLinks[key] ?? "")) ||
+      socialFields.some(({ key }) => key !== "github" && (saved.socialLinks?.[key] ?? "") !== (nextLinks[key] ?? "")) ||
       saved.userSkills.length !== nextSkills.size ||
       saved.userSkills.some(({ skillId, skillLevel }) => !nextSkills.has(skillId) || levels[skillId] !== skillLevel)
     ) {

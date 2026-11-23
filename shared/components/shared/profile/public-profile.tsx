@@ -13,6 +13,7 @@ import ProfilePortfolio from "./profile-portfolio"
 import { Icon } from "@/shared/components/ui/icon"
 import { Tag } from "@/shared/components/shared/catalog/catalog-tags"
 import { levelLabels } from "@/shared/lib/project-display"
+import GithubPortfolio from "./github-portfolio"
 
 const tabs = [
   ["portfolio", "Портфолио"],
@@ -145,6 +146,7 @@ export default function PublicProfile({
               <h2>Портфолио начинается с первой работы</h2>
             </div>
           )}
+          <GithubPortfolio connection={profile.githubConnection} />
         </section>
       )}
       {tab === "projects" && (
