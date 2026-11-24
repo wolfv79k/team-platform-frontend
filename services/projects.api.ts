@@ -18,8 +18,8 @@ import type {
 
 const p = apiEndpoints.projects
 export const projectsApi = {
-  list: async (params: ProjectFilters = {}) =>
-    (await apiClient.get<PageResponse<ProjectListItem>>(p.list, { params })).data,
+  list: async (params: ProjectFilters = {}, signal?: AbortSignal) =>
+    (await apiClient.get<PageResponse<ProjectListItem>>(p.list, { params, signal })).data,
   get: async (id: number) => (await apiClient.get<ProjectDetail>(p.detail(id))).data,
   create: async (input: CreateProjectInput) =>
     (await apiClient.post<CreatedProject>(p.list, input)).data,

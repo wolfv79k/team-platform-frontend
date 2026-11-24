@@ -14,6 +14,9 @@ const makeUser = (id, username, name) => ({
   locationId: 1,
 })
 const users = [makeUser(1, "owner", "Автор"), makeUser(2, "applicant", "Кандидат")]
+users.push({ ...makeUser(3, "moderator", "Администратор"), role: "ADMIN" })
+const temporaryAdmin = { ...makeUser(4, "temporary_admin", "Временный администратор"), role: "ADMIN" }
+users.push(temporaryAdmin)
 const skills = [
   { id: 1, name: "React" },
   { id: 2, name: "TypeScript" },
@@ -99,6 +102,10 @@ const server = createServer(async (req, res) => {
   const [, resource, id, sub, arg] = segments
   const auth = users.find((user) => req.headers.authorization === `Bearer mock-${user.id}`)
   const method = req.method
+  if (url.pathname === "/fixture/revoke-temporary-admin" && method === "POST") {
+    temporaryAdmin.role = "USER"
+    return send(204)
+  }
   if (url.pathname === "/media/test.png") {
     res.setHeader("Content-Type", "image/png")
     return res.end(

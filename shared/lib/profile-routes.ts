@@ -8,6 +8,7 @@ export const ADD_PROJECT_PATH = `${OWN_PROFILE_PATH}/settings/add-project`
 // First segments used by the app and Next.js, compared case-insensitively.
 const reservedUsernames = new Set([
   "_next",
+  "admin",
   "api",
   "auth",
   "communities",

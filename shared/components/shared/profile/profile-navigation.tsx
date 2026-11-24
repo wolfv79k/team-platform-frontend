@@ -3,6 +3,8 @@
 import Link from "next/link"
 import ThemeButton from "@/shared/components/shared/layout/theme-button"
 import { ProfileIcon } from "./profile-media"
+import { ShieldCheck } from "lucide-react"
+import { useViewer } from "../layout/viewer-provider"
 
 const links = [
   ["/projects", "Проекты", "projects.svg"],
@@ -33,6 +35,7 @@ function ProfileNavItem({
 }
 
 export default function ProfileNavigation() {
+  const admin = useViewer()?.role === "ADMIN"
   return (
     <>
       <aside className="sticky top-0 hidden h-dvh min-h-[620px] w-60 shrink-0 flex-col px-6 py-7 lg:flex">
@@ -61,6 +64,7 @@ export default function ProfileNavigation() {
           ))}
         </nav>
         <div className="mt-auto grid gap-3 px-3 pt-6 pb-10 text-xs text-account-subtle">
+          {admin && <Link href="/admin" className="flex items-center gap-2.5"><ShieldCheck size={15}/>Админ-панель</Link>}
           <Link href="/" className="flex items-center gap-2.5">
             <ProfileIcon file="globe.svg" size={15} />
             Главная
@@ -70,7 +74,7 @@ export default function ProfileNavigation() {
       </aside>
       <nav
         aria-label="Основная навигация"
-        className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-account-stroke bg-account-page pb-[env(safe-area-inset-bottom)] lg:hidden"
+        className={`fixed inset-x-0 bottom-0 z-40 grid ${admin ? "grid-cols-6" : "grid-cols-5"} border-t border-account-stroke bg-account-page pb-[env(safe-area-inset-bottom)] lg:hidden`}
       >
         {links.map(([href, label, icon]) => (
           <ProfileNavItem
@@ -82,6 +86,7 @@ export default function ProfileNavigation() {
             {label}
           </ProfileNavItem>
         ))}
+        {admin && <Link href="/admin" className="flex flex-col items-center justify-center gap-1 text-micro"><ShieldCheck size={20}/>Панель</Link>}
       </nav>
     </>
   )
